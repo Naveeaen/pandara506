@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive;
+package org.firstinspires.ftc.teamcode.pandara506.drive;
 
 import androidx.annotation.NonNull;
 
@@ -32,26 +32,26 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
-import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
+import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequenceBuilder;
+import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequenceRunner;
+import org.firstinspires.ftc.teamcode.pandara506.util.LynxModuleUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kV;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
@@ -159,6 +159,15 @@ public class SampleMecanumDrive extends MecanumDrive {
             slide.setPower(0);
         } catch (Exception p_exception) {
             slide = null;
+        }
+        try{
+            hanger = hardwareMap.get(DcMotorEx.class, "cm2");
+            hanger.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            hanger.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+            hanger.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            hanger.setPower(0);
+        } catch (Exception p_exception) {
+            hanger = null;
         }
 
         try{

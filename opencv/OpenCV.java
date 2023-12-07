@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.pandara506.opencv;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -49,13 +49,5 @@ public class OpenCV extends LinearOpMode {
             dashboardTelemetry.addData("position", position);
         }
         waitForStart();
-
-        if ((position.equals("Left"))) {
-
-        }
-
-        if ((position.equals("Right"))) {
-
-        }
     }
 }

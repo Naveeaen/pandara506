@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.pandara506;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.pandara506.drive.SampleMecanumDrive;
 
 //@Disabled
 @TeleOp(name = "ServoTester")
@@ -24,13 +24,14 @@ public class ServoTester extends LinearOpMode {
             telemetry.addData("actualposition", actualPosition);
             telemetry.update();
 
-            drive.launchPadPivot.setPosition(position);
-            actualPosition = drive.launchPadPivot.getPosition();
-            //left open pos = 0.503
-            //left close pos = 0.407
-            //right open pos = 0
-            //right close pos = 0.183
-            //wrist floor = 0.234
+            drive.clawLeft.setPosition(position);
+            drive.clawRight.setPosition(0.27);
+            actualPosition = drive.clawLeft.getPosition();
+            //left open pos = 0.56
+            //left close pos = 0.38
+            //right open pos = 0.27
+            //right close pos = 0.39
+            //wrist floor = 0.2
             //wrist angled = 0.488
             //launcher open = 0.198
             //launcher max = 0.39

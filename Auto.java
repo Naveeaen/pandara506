@@ -6,8 +6,8 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.pandara506.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 
 @Autonomous(group = "drive")
 public class Auto extends LinearOpMode{
