@@ -11,7 +11,7 @@ public class PipelineBlue extends OpenCvPipeline {
 
     private Mat workingMatrix = new Mat();
     public String position = "Insert Here";
-    public static int matLrowStart = 20;
+    /*public static int matLrowStart = 20;
     public static int matLrowEnd = 100;
     public static int matLcolStart = 225;
 
@@ -29,6 +29,25 @@ public class PipelineBlue extends OpenCvPipeline {
     public static int matRrowStart = 520;
     public static int matRrowEnd = 600;
     public static int matRcolStart = 225;
+
+    public static int matRcolEnd = 300;*/
+    public static int matLrowStart = 30;
+    public static int matLrowEnd = 80;
+    public static int matLcolStart = 275;
+
+    public static int matLcolEnd = 300;
+
+
+    public static int matCrowStart = 280;
+    public static int matCrowEnd = 330;
+    public static int matCcolStart = 275;
+
+    public static int matCcolEnd = 300;
+
+
+    public static int matRrowStart = 540;
+    public static int matRrowEnd = 590; //610
+    public static int matRcolStart = 275;
 
     public static int matRcolEnd = 300;
 

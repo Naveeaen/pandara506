@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pandara506.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 
 /*
  * This is an example of a more complex path to really test the tuning.
@@ -21,11 +22,12 @@ public class SplineTest extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        Trajectory traj = drive.trajectoryBuilder(new Pose2d())
+        TrajectorySequence traj = drive.trajectorySequenceBuilder(new Pose2d())
+                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(30, Math.toRadians(304), 11.19))
                 .splineTo(new Vector2d(24, 24), 0)
                 .build();
 
-        drive.followTrajectory(traj);
+        drive.followTrajectorySequence(traj);
 
         sleep(2000);
 

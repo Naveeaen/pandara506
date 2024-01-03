@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
 import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.kinematics.MecanumKinematics;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
@@ -58,10 +59,10 @@ import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(1.4, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(1,0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0,0, 0);
 
-    public static double LATERAL_MULTIPLIER = 1.67;
+    public static double LATERAL_MULTIPLIER = 1;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -74,8 +75,11 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private TrajectoryFollower follower;
 
+    //wheels
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private List<DcMotorEx> motors;
+
+    //hardware
     public DcMotorEx slide;
     public DcMotorEx hanger;
     public Servo clawLeft;
@@ -105,11 +109,6 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-        imu = hardwareMap.get(IMU.class, "imu");
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
-        imu.initialize(parameters);
-
         leftFront = hardwareMap.get(DcMotorEx.class, "em0");
         leftRear = hardwareMap.get(DcMotorEx.class, "em1");
         rightRear = hardwareMap.get(DcMotorEx.class, "cm1");
@@ -316,6 +315,17 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         setDrivePower(vel);
     }
+    @Override
+    public void setDrivePower(Pose2d drivePower){
+        List<Double> powers = MecanumKinematics.robotToWheelVelocities(
+                drivePower,
+                1.0,
+                1.0,
+                1.0
+        );
+        setMotorPowers(powers.get(0), powers.get(1), powers.get(2), powers.get(3));
+    }
+
 
     @NonNull
     @Override
@@ -354,12 +364,12 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-        return 50.0;
+        return 0;
     }
 
     @Override
     public Double getExternalHeadingVelocity() {
-        return 72.0;
+        return 0.0;
     }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {

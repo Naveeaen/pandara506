@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pandara506.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -34,19 +35,21 @@ public class BackAndForth extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
+        TrajectorySequence trajectoryForward = drive.trajectorySequenceBuilder(new Pose2d())
+                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(45, Math.toRadians(304), 11.19))
                 .forward(DISTANCE)
                 .build();
 
-        Trajectory trajectoryBackward = drive.trajectoryBuilder(trajectoryForward.end())
+        TrajectorySequence trajectoryBackward = drive.trajectorySequenceBuilder(trajectoryForward.end())
+                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(45, Math.toRadians(304), 11.19))
                 .back(DISTANCE)
                 .build();
 
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
-            drive.followTrajectory(trajectoryForward);
-            drive.followTrajectory(trajectoryBackward);
+            drive.followTrajectorySequence(trajectoryForward);
+            drive.followTrajectorySequence(trajectoryBackward);
         }
     }
 }

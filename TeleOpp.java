@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.pandara506.drive.SampleMecanumDrive;
 
 @TeleOp (name = "TeleOp")
 public class TeleOpp extends LinearOpMode {
-    int position = 0;
     public void runOpMode(){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
@@ -20,17 +19,18 @@ public class TeleOpp extends LinearOpMode {
 
         waitForStart();
 
+        //claw vars
         String clawMode = "";
         boolean leftOpen = true;
         boolean rightOpen = true;
         boolean bothOpen = true;
-        double leftOpenPos = 0.56;
-        double leftClosePos = 0.38;
+        double leftOpenPos = 0.2;
+        double leftClosePos = 0.07;
         double rightOpenPos = 0.27;
         double rightClosePos = 0.39;
 
+        //pressing buttons
         boolean pressingy = false;
-        boolean launchLaunched = false;
         boolean pressinga = false;
         boolean pressingtriggerR = false;
         boolean pressedtriggerR = false;
@@ -45,41 +45,67 @@ public class TeleOpp extends LinearOpMode {
         boolean pressedx = false;
         boolean right_y_up = false;
         boolean right_y_down = false;
-        int spoolTime = 0;
         boolean pressingDpadD = false;
         boolean pressingDpadU = false;
-        int position = 0;
-        double wristPos = 0.54;
+        boolean pressingstickL = false;
+        boolean pressingstickR = false;
+
+        boolean launchLaunched = false;
         double launchPos = 0.198;
         double launchPosSpeed= 0;
         String mode = "slide";
+        boolean pressingback = false;
+
+        double wristPos = 0.54;
+        int position = 0;
+
+        //slow vars
+        boolean slowDown = false;
+        boolean pressingrighttriggerbutton = false;
+        boolean pressingyd1 = false;
 
 
         while(opModeIsActive()) {
-            drive.setWeightedDrivePower(
-                    new Pose2d(
-                            -gamepad1.left_stick_y,
-                            -gamepad1.left_stick_x,
-                            -gamepad1.right_stick_x
-                    )
-            );
+            if (gamepad1.x && !pressingx){
+                drive.setWeightedDrivePower(
+                        new Pose2d(0, 0, 0)
+                );
+                pressingx = true;
+            } else if(!gamepad1.x){
+                drive.setWeightedDrivePower(
+                        new Pose2d(
+                                -(Math.atan(4 * gamepad1.left_stick_y) / Math.atan(5)) * Math.max(Math.abs(1.38 - gamepad1.left_trigger), 0.2),
+                                -(Math.atan(4 * gamepad1.left_stick_x) / Math.atan(5)) * Math.max(Math.abs(1.6 - gamepad1.left_trigger), 0.2),
+                                -(Math.atan(4 * gamepad1.right_stick_x) / Math.atan(5)) * Math.max(Math.abs(1.4 - gamepad1.left_trigger), 0.2)
+                        )
+                );
+                pressingx = false;
+            }
 
             drive.update();
 
-            if(gamepad1.right_bumper) {clawMode = "right";}
-            else if(gamepad1.left_bumper) {clawMode = "left";}
+            if(gamepad1.left_bumper) {clawMode = "right";}
+            else if(gamepad1.right_bumper) {clawMode = "left";}
             else if(gamepad1.right_trigger > 0) {clawMode = "bump";}
             else {clawMode = "none";}
 
             telemetry.addData("Claw", clawMode);
-            telemetry.addData("Left", leftOpen);
-            telemetry.addData("Right", rightOpen);
-            telemetry.addData("Both", bothOpen);
+            if(leftOpen){
+                telemetry.addData("Left claw is open", "");
+            }
+            else if(rightOpen){
+                telemetry.addData("Right claw is open", "");
+            }
+            else if(bothOpen){
+                telemetry.addData("Claw is open", "");
+            } else{
+                telemetry.addData("Claw is closed", "");
+            }
             telemetry.update();
 
 
-            //biancas claw code (much better)
-            if(clawMode.equals("left") && !pressingx){
+            //biancas claw code (much better (same concept as mine but looks nicer))
+            if(clawMode.equals("right") && !pressinga){
                 if(leftOpen){
                     bothOpen = false;
                     drive.clawLeft.setPosition(leftOpenPos);
@@ -89,12 +115,12 @@ public class TeleOpp extends LinearOpMode {
                     drive.clawLeft.setPosition(leftClosePos);
                     leftOpen = true;
                 }
-                pressingx = true;
-            } else if(!clawMode.equals("left")){
-                pressingx = false;
+                pressinga = true;
+            } else if(!clawMode.equals("right")){
+                pressinga = false;
             }
 
-            if(clawMode.equals("right") && !pressingb){
+            if(clawMode.equals("left") && !pressingb){
                 if(rightOpen){
                     bothOpen = false;
                     drive.clawRight.setPosition(rightOpenPos);
@@ -105,7 +131,7 @@ public class TeleOpp extends LinearOpMode {
                     rightOpen = true;
                 }
                 pressingb = true;
-            } else if(!clawMode.equals("right")){
+            } else if(!clawMode.equals("left")){
                 pressingb = false;
             }
 
@@ -128,57 +154,87 @@ public class TeleOpp extends LinearOpMode {
                 pressingBump = false;
             }
 
+
+
+
+            //slide to hanger
+            if(gamepad2.back && !pressingback){
+                if(mode.equals("slide")){
+                    mode = "hang";
+
+                } else if(mode.equals("hang")){
+                    mode = "slide";
+                }
+                pressingback = true;
+            } else if(!gamepad2.back){
+                pressingback = false;
+            }
+            telemetry.addData("slide mode", mode);
+            telemetry.addData("pressingback", pressingback);
+            telemetry.update();
+
+            //slides
             if(mode.equals("slide")) {
-                //slides goin up
+                //slide restrictions
                 if (drive.slide.getCurrentPosition() < 20 && gamepad2.left_stick_y > 0) {
                     drive.slide.setPower(0);
                 } else if (drive.slide.getCurrentPosition() > 3900 && gamepad2.left_stick_y < 0) {
                     drive.slide.setPower(0);
                 } else {
+                    //drive controlled power
                     drive.slide.setPower(-gamepad2.left_stick_y);
+                    /*if(gamepad2.left_stick_y < 0)
+                        position += 1;
+                    if(gamepad2.left_stick_y > 0)
+                        position -= 1;
+                    drive.slide.setPower(1);
+                    drive.slide.setTargetPosition(position);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);*/
                 }
             }
 
-            if(gamepad2.left_stick_button) mode = "hang";
 
+            //hanger
             if(mode.equals("hang")){
                 drive.slide.setPower(0.8);
                 drive.slide.setTargetPosition(10);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 //slide code copy pasted for hanger
-                if (drive.hanger.getCurrentPosition() < 20 && gamepad2.left_stick_y < 0) {
+                if (drive.hanger.getCurrentPosition() < 10 && gamepad2.left_stick_y > 0) {
                     drive.hanger.setPower(0);
-                } else if (drive.hanger.getCurrentPosition() > 4650 && gamepad2.left_stick_y > 0) {
+                } else if (drive.hanger.getCurrentPosition() > 4650 && gamepad2.left_stick_y < 0) {
                     drive.hanger.setPower(0);
                 } else {
-                    drive.hanger.setPower(gamepad2.left_stick_y);
+                    drive.hanger.setPower(-gamepad2.left_stick_y);
                 }
 
             }
 
             //wrist
             if (drive.slide.getCurrentPosition() > 100) {
-                drive.wrist.setPosition(0.488);
+                drive.wrist.setPosition(0.34);
             } else {
-                drive.wrist.setPosition(0.2);
+                drive.wrist.setPosition(0.169);
             }
+
+
 
             //"launcher"
             drive.launchPadPivot.setPosition(launchPos);
-            if(gamepad2.right_stick_y < 0 && !right_y_up && launchPos <= 0.39) {
-                launchPos -= .01;
-                right_y_up = true;
-            } else {
-                right_y_up = false;
+            launchPos += launchPosSpeed;
+            if(gamepad2.right_stick_y < 0 && launchPos > 0.39) {
+                launchPosSpeed = 0;
+            } else if(gamepad2.right_stick_y > 0 && launchPos < 0.198) {
+                launchPosSpeed = 0;
+            } else if(gamepad2.right_stick_y < 0){
+                launchPosSpeed = .01;
+            } else if(gamepad2.right_stick_y > 0){
+                launchPosSpeed = -.01;
+            } else if(gamepad2.right_stick_y == 0){
+                launchPosSpeed = 0;
             }
 
-            if(gamepad2.right_stick_y > 0 && !right_y_down && launchPos >= 0.198) {
-                launchPos += .01;
-                right_y_down = true;
-            } else {
-                right_y_down = false;
-            }
 
             //launch trigger
             if(gamepad2.y && !pressingy){
@@ -193,6 +249,7 @@ public class TeleOpp extends LinearOpMode {
             } else if(!gamepad2.y){
                 pressingy= false;
             }
+
 
             
 

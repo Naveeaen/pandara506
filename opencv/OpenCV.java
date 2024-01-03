@@ -15,7 +15,7 @@ public class OpenCV extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
     OpenCvCamera webCam;
     public PipelineRed detector;
-    private String position = "Insert Here";
+    public static String position = "Insert Here";
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
