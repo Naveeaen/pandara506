@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.pandara506.drive.SampleMecanumDrive;
 
-@TeleOp (name = "TeleOp")
+@TeleOp(name = "TeleOp")
 public class TeleOpp extends LinearOpMode {
     public void runOpMode(){
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -251,7 +251,7 @@ public class TeleOpp extends LinearOpMode {
             }
 
 
-            
+
 
             /*//forwards/backwards
             if(gamepad1.left_stick_y >= 0){

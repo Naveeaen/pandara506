@@ -1,34 +1,30 @@
 package org.firstinspires.ftc.teamcode.pandara506.opencv;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
-public class PipelineRed extends OpenCvPipeline {
+public class PipelineRedBack extends OpenCvPipeline {
 
     private Mat workingMatrix = new Mat();
     public String position = "Right";
-    public static int matLrowStart = 30;
-    public static int matLrowEnd = 80;
+    public static int matLrowStart = 60;
+    public static int matLrowEnd = 110;
     public static int matLcolStart = 325;
-
     public static int matLcolEnd = 350
             ;
 
 
-    public static int matCrowStart = 280;
-    public static int matCrowEnd = 330;
+    public static int matCrowStart = 305;
+    public static int matCrowEnd = 355;
     public static int matCcolStart = 325;
-
     public static int matCcolEnd = 350;
 
 
-    public static int matRrowStart = 530;
-    public static int matRrowEnd = 590; //610
+    public static int matRrowStart = 540;
+    public static int matRrowEnd = 600; //610
     public static int matRcolStart = 325;
 
     public static int matRcolEnd = 350;
@@ -38,7 +34,7 @@ public class PipelineRed extends OpenCvPipeline {
     public double rightRed = 0;
     public double centerRed = 0;
 
-    public PipelineRed() {
+    public PipelineRedBack() {
 
     }
 

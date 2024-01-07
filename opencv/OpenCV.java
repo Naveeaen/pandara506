@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 public class OpenCV extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
     OpenCvCamera webCam;
-    public PipelineRed detector;
+    public PipelineRedBack detector;
     public static String position = "Insert Here";
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
@@ -26,7 +26,7 @@ public class OpenCV extends LinearOpMode {
         telemetry.update();
 
         int cameraMotionViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        detector = new PipelineRed();
+        detector = new PipelineRedBack();
         webCam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "wc1"), cameraMotionViewId);
         webCam.openCameraDevice();
         FtcDashboard.getInstance().startCameraStream(webCam, 0);

@@ -60,7 +60,7 @@ import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kV;
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0.5, 0.005);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(15, 0.005, 0.005);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(15,0.005, 0.005);
 
     public static double LATERAL_MULTIPLIER = 1;
 
@@ -70,8 +70,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private TrajectorySequenceRunner trajectorySequenceRunner;
 
-    private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH);
-    private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
+    private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MAX_VEL, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MAX_ANG_VEL, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.TRACK_WIDTH);
+    private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MAX_ACCEL);
 
     private TrajectoryFollower follower;
 
@@ -95,7 +95,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private List<Integer> lastEncVels = new ArrayList<>();
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
-        super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
+        super(org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kV, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kA, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kStatic, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.TRACK_WIDTH, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
@@ -122,14 +122,14 @@ public class SampleMecanumDrive extends MecanumDrive {
             motor.setMotorType(motorConfigurationType);
         }
 
-        if (RUN_USING_ENCODER) {
+        if (org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.RUN_USING_ENCODER) {
             setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
         setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
-            setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
+        if (org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.RUN_USING_ENCODER && org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MOTOR_VELO_PID != null) {
+            setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MOTOR_VELO_PID);
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
@@ -215,7 +215,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         return new TrajectorySequenceBuilder(
                 startPose,
                 VEL_CONSTRAINT, ACCEL_CONSTRAINT,
-                MAX_ANG_VEL, MAX_ANG_ACCEL
+                org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MAX_ANG_VEL, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.MAX_ANG_ACCEL
         );
     }
 
@@ -336,7 +336,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         for (DcMotorEx motor : motors) {
             int position = motor.getCurrentPosition();
             lastEncPositions.add(position);
-            wheelPositions.add(encoderTicksToInches(position));
+            wheelPositions.add(org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.encoderTicksToInches(position));
         }
         return wheelPositions;
     }
@@ -349,7 +349,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         for (DcMotorEx motor : motors) {
             int vel = (int) motor.getVelocity();
             lastEncVels.add(vel);
-            wheelVelocities.add(encoderTicksToInches(vel));
+            wheelVelocities.add(org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.encoderTicksToInches(vel));
         }
         return wheelVelocities;
     }

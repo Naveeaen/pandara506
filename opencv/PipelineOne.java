@@ -26,7 +26,7 @@ public class PipelineOne extends LinearOpMode {
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
     Hardware robot = Hardware.getInstance();
     OpenCvCamera webCam;
-    public PipelineRed detector;
+    public PipelineRedBack detector;
     private String position = "AssumingUpperTray";
 
     public static int matLrowStart = 20;
@@ -59,7 +59,7 @@ public class PipelineOne extends LinearOpMode {
         waitForStart();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        detector = new PipelineRed();
+        detector = new PipelineRedBack();
         webCam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "wc1"), cameraMonitorViewId);
         webCam.openCameraDevice();
         FtcDashboard.getInstance().startCameraStream(webCam, 0);
