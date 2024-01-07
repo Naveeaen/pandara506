@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.pandara506.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.pandara506.opencv.PipelineRed;
+import org.firstinspires.ftc.teamcode.pandara506.opencv.PipelineRedFront;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.pandara506.opencv.OpenCV;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -21,7 +22,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Autonomous(group = "drive")
 public class redAuto extends LinearOpMode{
     OpenCvCamera webCam;
-    public PipelineRed detector;
+    public PipelineRedFront detector;
     public  String position = "Insert Here";
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
@@ -30,11 +31,11 @@ public class redAuto extends LinearOpMode{
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(-36,  -63.625, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(0, 0, Math.toRadians(0));
         drive.setPoseEstimate(startPose);
 
         int cameraMotionViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        detector = new PipelineRed();
+        detector = new PipelineRedFront();
         webCam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "wc1"), cameraMotionViewId);
         webCam.openCameraDevice();
         FtcDashboard.getInstance().startCameraStream(webCam, 0);
@@ -62,14 +63,10 @@ public class redAuto extends LinearOpMode{
         //1
         TrajectorySequence trajSeq1a = drive.trajectorySequenceBuilder(startPose)
                 .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(45, Math.toRadians(304), 11.73))
-                .strafeRight(6)
-                .forward(30)
-                .turn(Math.toRadians(90))
-                .forward(5)
+                .splineTo( new Vector2d(0, 30), Math.toRadians(90))
                 .build();
         TrajectorySequence trajSeq1b = drive.trajectorySequenceBuilder(trajSeq1a.end())
                 .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(45, Math.toRadians(304), 11.73))
-                .back(5)
                 .strafeLeft(2)
                 .turn(Math.toRadians(180))
                 .forward(75)
@@ -129,12 +126,17 @@ public class redAuto extends LinearOpMode{
 
         switch(position){
             case "Left":
+                //claw closes on initialization
                 drive.clawLeft.setPosition(0.07);
                 drive.clawRight.setPosition(0.4);
+                //drive to spike mark
                 drive.followTrajectorySequence(trajSeq1a);
+                //left claw open
                 drive.clawLeft.setPosition(0.2);
                 drive.wrist.setPosition(0.34);
+                //drive to backboard
                 drive.followTrajectorySequence(trajSeq1b);
+                //slidess
                 drive.slide.setPower(0.9);
                 drive.slide.setTargetPosition(1500);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -142,9 +144,11 @@ public class redAuto extends LinearOpMode{
                 while (opModeIsActive() && drive.slide.isBusy()){
 
                 }
+                //forward a bit and drop then back
                 drive.followTrajectorySequence(trajSeq1c);
                 drive.clawRight.setPosition(0.27);
                 drive.followTrajectorySequence(trajSeq1d);
+                //reset everything
                 drive.slide.setPower(0.7);
                 drive.slide.setTargetPosition(1);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -152,7 +156,6 @@ public class redAuto extends LinearOpMode{
                 while (opModeIsActive() && drive.slide.isBusy()){
 
                 }
-                //reset stuff
                 drive.clawLeft.setPosition(0.07);
                 drive.clawRight.setPosition(0.38);
                 drive.wrist.setPosition(0.169);

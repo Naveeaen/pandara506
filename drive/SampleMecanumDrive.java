@@ -59,8 +59,8 @@ import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0,0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0.5, 0.005);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(15, 0.005, 0.005);
 
     public static double LATERAL_MULTIPLIER = 1;
 
@@ -111,7 +111,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         // TODO: adjust the names of the following hardware devices to match your configuration
         leftFront = hardwareMap.get(DcMotorEx.class, "em0");
         leftRear = hardwareMap.get(DcMotorEx.class, "em1");
-        rightRear = hardwareMap.get(DcMotorEx.class, "cm1");
+        rightRear = hardwareMap.get(DcMotorEx.class, "cm3");
         rightFront = hardwareMap.get(DcMotorEx.class, "cm0");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
