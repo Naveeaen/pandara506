@@ -60,7 +60,7 @@ import static org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kV;
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0.5, 0.005);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(15,0.005, 0.005);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8.5,0.005, 0.005);
 
     public static double LATERAL_MULTIPLIER = 1;
 
@@ -83,7 +83,11 @@ public class SampleMecanumDrive extends MecanumDrive {
     public DcMotorEx slide;
     public DcMotorEx hanger;
     public Servo clawLeft;
+    public double clawLeftOpenPos = 0.22;
+    public double clawLeftClosePos = 0.09;
     public Servo clawRight;
+    public double clawRightOpenPos = 0.24;
+    public double clawRightClosePos = 0.4;
     public Servo wrist;
     public Servo launchPadPivot;
     public Servo initiateLaunch;

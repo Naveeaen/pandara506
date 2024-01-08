@@ -32,10 +32,15 @@ public class automusRedBack extends LinearOpMode {
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
 
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        double leftOpenPos = drive.clawLeftOpenPos;
+        double leftClosePos = drive.clawLeftClosePos;
+        double rightOpenPos = drive.clawRightOpenPos;
+        double rightClosePos = drive.clawRightClosePos;
 
         Pose2d startPose = new Pose2d(0, 0, Math.toRadians(0));
         drive.setPoseEstimate(startPose);
@@ -87,7 +92,7 @@ public class automusRedBack extends LinearOpMode {
                 .splineTo(new Vector2d(40,-90), Math.toRadians(-90))
                 .build();
         Trajectory traj8a = drive.trajectoryBuilder(traj7a.end())
-                .back(10)
+                .back(8)
                 .build();
 
         Trajectory traj1b = drive.trajectoryBuilder(new Pose2d())
@@ -134,15 +139,15 @@ public class automusRedBack extends LinearOpMode {
                 .back(8)
                 .build();
 
-        drive.clawLeft.setPosition(0.07);
-        drive.clawRight.setPosition(0.4);
+        drive.clawLeft.setPosition(leftClosePos);
+        drive.clawRight.setPosition(rightClosePos);
 
         waitForStart();
         int cameraZone = 2;
-        switch (cameraZone) {
-            case 1:
+        switch (position) {
+            case "Left":
                 drive.followTrajectory(traj1a);
-                drive.clawLeft.setPosition(0.2);
+                drive.clawLeft.setPosition(leftOpenPos);
                 drive.wrist.setPosition(0.34);
                 drive.followTrajectory(traj2a);
                 drive.followTrajectory(traj3a);
@@ -155,21 +160,21 @@ public class automusRedBack extends LinearOpMode {
                 while (opModeIsActive() && drive.slide.isBusy()) {
                 }
                 drive.followTrajectory(traj7a);
-                drive.clawRight.setPosition(0.27);
+                drive.clawRight.setPosition(rightOpenPos);
                 drive.followTrajectory(traj8a);
                 drive.slide.setPower(0.7);
                 drive.slide.setTargetPosition(1);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 while (opModeIsActive() && drive.slide.isBusy()){
                 }
-                drive.clawLeft.setPosition(0.07);
-                drive.clawRight.setPosition(0.38);
+                drive.clawLeft.setPosition(leftClosePos);
+                drive.clawRight.setPosition(rightClosePos);
                 drive.wrist.setPosition(0.169);
                 drive.followTrajectory(traj8a);
                 break;
-            case 2:
+            case "Center":
                 drive.followTrajectory(traj1b);
-                drive.clawLeft.setPosition(0.2);
+                drive.clawLeft.setPosition(leftOpenPos);
                 drive.wrist.setPosition(0.34);
                 drive.followTrajectory(traj2b);
                 drive.followTrajectory(traj3b);
@@ -180,21 +185,21 @@ public class automusRedBack extends LinearOpMode {
                 while (opModeIsActive() && drive.slide.isBusy()) {
                 }
                 drive.followTrajectory(traj5b);
-                drive.clawRight.setPosition(0.27);
+                drive.clawRight.setPosition(rightOpenPos);
                 drive.followTrajectory(traj6b);
                 drive.slide.setPower(0.7);
                 drive.slide.setTargetPosition(1);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 while (opModeIsActive() && drive.slide.isBusy()){
                 }
-                drive.clawLeft.setPosition(0.07);
-                drive.clawRight.setPosition(0.38);
+                drive.clawLeft.setPosition(leftClosePos);
+                drive.clawRight.setPosition(rightClosePos);
                 drive.wrist.setPosition(0.169);
                 drive.followTrajectory(traj6b);
                 break;
             default:
                 drive.followTrajectory(traj1c);
-                drive.clawLeft.setPosition(0.2);
+                drive.clawLeft.setPosition(leftOpenPos);
                 drive.wrist.setPosition(0.34);
                 drive.followTrajectory(traj2c);
                 drive.followTrajectory(traj3c);
@@ -206,15 +211,15 @@ public class automusRedBack extends LinearOpMode {
                 while (opModeIsActive() && drive.slide.isBusy()) {
                 }
                 drive.followTrajectory(traj6c);
-                drive.clawRight.setPosition(0.27);
+                drive.clawRight.setPosition(rightOpenPos);
                 drive.followTrajectory(traj7c);
                 drive.slide.setPower(0.7);
                 drive.slide.setTargetPosition(1);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 while (opModeIsActive() && drive.slide.isBusy()){
                 }
-                drive.clawLeft.setPosition(0.07);
-                drive.clawRight.setPosition(0.38);
+                drive.clawLeft.setPosition(leftClosePos);
+                drive.clawRight.setPosition(rightClosePos);
                 drive.wrist.setPosition(0.169);
                 drive.followTrajectory(traj7c);
                 /*drive.slide.setPower(0.9);

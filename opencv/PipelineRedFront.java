@@ -21,7 +21,7 @@ public class PipelineRedFront extends OpenCvPipeline {
 
 
     public static int matRrowStart = 370;
-    public static int matRrowEnd = 430; //610
+    public static int matRrowEnd = 425; //610
     public static int matRcolStart = 325;
     public static int matRcolEnd = 350;
 
@@ -54,9 +54,9 @@ public class PipelineRedFront extends OpenCvPipeline {
         centerRed = Core.sumElems(matC).val[0];
         centerRed /= matC.rows() * matC.cols();
 
-        if (centerRed > 130) {
+        if (centerRed > 150 && centerRed > rightRed) {
             position = "Center";
-        }   else if (rightRed > 130) {
+        }   else if (rightRed > 150 && rightRed > centerRed) {
             position = "Right";
         }   else {
             position = "Left";

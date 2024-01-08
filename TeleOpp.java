@@ -24,10 +24,10 @@ public class TeleOpp extends LinearOpMode {
         boolean leftOpen = true;
         boolean rightOpen = true;
         boolean bothOpen = true;
-        double leftOpenPos = 0.2;
-        double leftClosePos = 0.07;
-        double rightOpenPos = 0.27;
-        double rightClosePos = 0.39;
+        double leftOpenPos = drive.clawLeftOpenPos;
+        double leftClosePos = drive.clawLeftClosePos;
+        double rightOpenPos = drive.clawRightOpenPos;
+        double rightClosePos = drive.clawRightClosePos;
 
         //pressing buttons
         boolean pressingy = false;
