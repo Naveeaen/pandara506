@@ -55,7 +55,7 @@ public class automusRedFront extends LinearOpMode {
         webCam.startStreaming(640,480, OpenCvCameraRotation.UPSIDE_DOWN);
         webCam.setPipeline(detector);
         while (!isStarted() && !isStopRequested()) {
-            position = "Left";
+            position = detector.position;
             telemetry.addData("position", position);
             telemetry.addData("leftRed", detector.leftRed);
             telemetry.addData("centerRed", detector.centerRed);
@@ -117,7 +117,7 @@ public class automusRedFront extends LinearOpMode {
                 .back(10)
                 .build();
         Trajectory traj3c = drive.trajectoryBuilder(traj2c.end())
-                .splineTo(new Vector2d(21, -28), Math.toRadians(-90))
+                .splineTo(new Vector2d(22, -28), Math.toRadians(-90))
                 .build();
         Trajectory traj4c = drive.trajectoryBuilder(traj3c.end())
                 .forward(8)
@@ -128,28 +128,40 @@ public class automusRedFront extends LinearOpMode {
         Trajectory traj6c = drive.trajectoryBuilder(traj5a.end())
                 .back(8)
                 .build();
+
+        //Cycle trajectories
         Pose2d end = new Pose2d();
         Trajectory trajCycle1 = drive.trajectoryBuilder(end)
                 .splineTo(new Vector2d (56, 20), Math.toRadians(90))
                 .build();
         Trajectory trajCycle2 = drive.trajectoryBuilder(trajCycle1.end())
-                .splineTo(new Vector2d(47.5, 78), Math.toRadians(96))
+                .splineTo(new Vector2d(46, 78), Math.toRadians(96))
                 .build();
         Trajectory trajCycle3 = drive.trajectoryBuilder(trajCycle2.end())
                 .back(8)
                 .build();
         TrajectorySequence trajCycle3b = drive.trajectorySequenceBuilder(trajCycle3.end())
                 .strafeLeft(4)
-                .forward(7.29)
+                .forward(7.26)
                 .build();
         TrajectorySequence trajCycle4 = drive.trajectorySequenceBuilder(trajCycle3b.end())
                 .back(10)
                 .splineTo(new Vector2d(53, -20), Math.toRadians(-90))
                 .build();
-        Trajectory trajCycle5 = drive.trajectoryBuilder(trajCycle4.end())
-                .splineTo(new Vector2d(22, -28), -90)
-                .build();
 
+        Vector2d end2 = new Vector2d(21, -28);
+        Trajectory trajCycle5 = drive.trajectoryBuilder(trajCycle4.end())
+                .splineTo(end2, Math.toRadians(-90))
+                .build();
+        Trajectory trajCycle6 = drive.trajectoryBuilder(trajCycle5.end())
+                .forward(8)
+                .build();
+        Trajectory trajCycle7 = drive.trajectoryBuilder(trajCycle6.end())
+                .back(8)
+                .build();
+        TrajectorySequence trajCycle8 = drive.trajectorySequenceBuilder(trajCycle7.end())
+                .forward(1)
+                .build();
 
 
         waitForStart();
@@ -181,41 +193,6 @@ public class automusRedFront extends LinearOpMode {
                         .splineTo(new Vector2d (53, 20), Math.toRadians(90))
                         .build();
                 drive.followTrajectory(trajCycle1);
-                drive.followTrajectory(trajCycle2);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(340);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-                }
-                drive.followTrajectory(trajCycle3);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(245);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-                }
-                drive.followTrajectorySequence(trajCycle3b);
-                drive.clawRight.setPosition(rightClosePos);
-                sleep(5);
-                drive.followTrajectorySequence(trajCycle4);
-                drive.followTrajectory(trajCycle5);
-                //cycle slidesd
-                drive.slide.setPower(0.9);
-                drive.slide.setTargetPosition(1300);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()) {
-                }
-                drive.followTrajectory(traj4a);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.followTrajectory(traj5a);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(320);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-                }
-                drive.wrist.setPosition(0.169);
-                drive.followTrajectory(traj6a);
                 break;
             case "Center":
                 drive.followTrajectory(traj1b);
@@ -243,23 +220,6 @@ public class automusRedFront extends LinearOpMode {
                         .splineTo(new Vector2d (53, 20), Math.toRadians(90))
                         .build();
                 drive.followTrajectory(trajCycle1);
-                drive.followTrajectory(trajCycle2);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(340);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-                }
-                drive.followTrajectory(trajCycle3);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(240);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-
-                }
-                drive.wait(5);
-                drive.clawRight.setPosition(rightClosePos);
-                drive.followTrajectorySequence(trajCycle4);
                 break;
             default:
                 drive.followTrajectory(traj1c);
@@ -287,22 +247,54 @@ public class automusRedFront extends LinearOpMode {
                         .splineTo(new Vector2d (53, 20), Math.toRadians(90))
                         .build();
                 drive.followTrajectory(trajCycle1);
-                drive.followTrajectory(trajCycle2);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(340);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-                }
-                drive.followTrajectory(trajCycle3);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(250);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-                }
-                drive.clawRight.setPosition(rightClosePos);
-                drive.followTrajectorySequence(trajCycle4);
                 break;
         }
+        //Cycling
+        drive.followTrajectory(trajCycle2);
+        drive.clawLeft.setPosition(leftClosePos);
+        drive.slide.setPower(0.7);
+        drive.slide.setTargetPosition(340);
+        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (opModeIsActive() && drive.slide.isBusy()){
+        }
+        drive.followTrajectory(trajCycle3);
+        drive.slide.setPower(0.7);
+        drive.slide.setTargetPosition(245);
+        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (opModeIsActive() && drive.slide.isBusy()){
+        }
+        drive.followTrajectorySequence(trajCycle3b);
+        drive.clawRight.setPosition(rightClosePos);
+        sleep(200);
+        drive.wrist.setPosition(0.34);
+        drive.followTrajectorySequence(trajCycle4);
+        if (position.equals("Left")){
+                end2 = new Vector2d(21, -28);
+                trajCycle5 = drive.trajectoryBuilder(trajCycle4.end())
+                        .splineTo(end2, Math.toRadians(-90))
+                        .build();
+                trajCycle6 = drive.trajectoryBuilder(trajCycle5.end())
+                    .forward(8)
+                    .build();
+        }
+        drive.followTrajectory(trajCycle5);
+        //cycle slidesd up
+        drive.slide.setPower(0.9);
+        drive.slide.setTargetPosition(1300);
+        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (opModeIsActive() && drive.slide.isBusy()) {
+        }
+        //forward and drop
+        drive.followTrajectory(trajCycle6);
+        drive.clawLeft.setPosition(leftOpenPos);
+        drive.clawRight.setPosition(rightOpenPos);
+        //back and slide down
+        drive.slide.setPower(0.7);
+        drive.slide.setTargetPosition(1);
+        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (opModeIsActive() && drive.slide.isBusy()){
+        }
+        drive.wrist.setPosition(0.169);
+        drive.followTrajectory(trajCycle7);
     }
 }
