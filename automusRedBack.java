@@ -23,7 +23,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
  * This is a simple routine to test turning capabilities.
  */
 @Config
-@Autonomous(group = "auto")
+@Autonomous(group = "autoRed")
 public class automusRedBack extends LinearOpMode {
     OpenCvCamera webCam;
     public PipelineRedBack detector;
