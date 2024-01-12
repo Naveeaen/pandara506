@@ -3,9 +3,11 @@
 [![ftc-dashboard](https://img.shields.io/badge/ftc--dashboard-0.4.13-lightgrey)](https://github.com/acmerobotics/ftc-dashboard)
 [![FTCLib](https://img.shields.io/badge/FTCLib-v2.1.1-lightgrey)](https://github.com/FTCLib/FTCLib)
 
-# Notes
+## Notes
 
  - Uploading the whole project and not just the TeamCode section is important so that the code will be set up the same across computers
+ - Use the git tab inside of android studio to better manage the project
+ - keep organized folders
 
 # Team 506 - Pandara Code for the 2023-24 CENTERSTAGE Season
 
