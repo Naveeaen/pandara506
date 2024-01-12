@@ -53,8 +53,8 @@ import static org.firstinspires.ftc.teamcode.d_roadrunner.drive.DriveConstants.k
  */
 @Config
 public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0.5, 0.005);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8.5,0.005, 0.005);
 
     public static double LATERAL_MULTIPLIER = 1;
 
@@ -98,10 +98,10 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
                 DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
         imu.initialize(parameters);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        leftFront = hardwareMap.get(DcMotorEx.class, "em0");
+        leftRear = hardwareMap.get(DcMotorEx.class, "em1");
+        rightRear = hardwareMap.get(DcMotorEx.class, "cm3");
+        rightFront = hardwareMap.get(DcMotorEx.class, "cm0");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 

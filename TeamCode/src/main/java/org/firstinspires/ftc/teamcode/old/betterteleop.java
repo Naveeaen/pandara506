@@ -6,11 +6,12 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.old.drive.SampleMecanumDrive;
 
-//@Disabled
+@Disabled
 @Config
 @TeleOp(name = "betterTeleOp")
 public class betterteleop extends CommandOpMode {

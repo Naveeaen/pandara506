@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -21,6 +22,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 /*
  * This is a simple routine to test turning capabilities.
  */
+@Disabled
 @Config
 @Autonomous(group = "autoRed")
 public class automusRedBack extends LinearOpMode {

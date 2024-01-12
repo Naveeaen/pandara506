@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.old;
 
 public class Hardware {
 
-    //wheels
-   /* public DcMotorEx lf, lr, rf, rr;
+    /*//wheels
+    public DcMotorEx lf, lr, rf, rr;
     public DcMotorEx slide;
     public DcMotorEx hanger;
     public Servo clawRight;
