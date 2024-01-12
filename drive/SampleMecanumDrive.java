@@ -33,6 +33,8 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+//import org.firstinspires.ftc.teamcode.pandara506.MecanumSubsystem;
+import org.firstinspires.ftc.teamcode.pandara506.MecanumSubsystem;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequenceRunner;
@@ -84,10 +86,10 @@ public class SampleMecanumDrive extends MecanumDrive {
     public DcMotorEx hanger;
     public Servo clawLeft;
     public double clawLeftOpenPos = 0.22;
-    public double clawLeftClosePos = 0.09;
+    public double clawLeftClosePos = 0.08;
     public Servo clawRight;
     public double clawRightOpenPos = 0.24;
-    public double clawRightClosePos = 0.4;
+    public double clawRightClosePos = 0.41;
     public Servo wrist;
     public Servo launchPadPivot;
     public Servo initiateLaunch;
@@ -97,6 +99,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
+    public MecanumSubsystem drive;
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
         super(org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kV, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kA, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.kStatic, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.TRACK_WIDTH, org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants.TRACK_WIDTH, LATERAL_MULTIPLIER);
@@ -119,6 +122,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightFront = hardwareMap.get(DcMotorEx.class, "cm0");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
+
+        drive = new MecanumSubsystem(new SampleMecanumDrive(hardwareMap), true);
 
         for (DcMotorEx motor : motors) {
             MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();

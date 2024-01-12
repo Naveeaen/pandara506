@@ -25,7 +25,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
  */
 @Config
 @Autonomous(group = "autoBlue")
-public class automusBlueFront extends LinearOpMode {
+public class automusBlueBack extends LinearOpMode {
 
     OpenCvCamera webCam;
     public PipelineBlue detector;
@@ -70,118 +70,97 @@ public class automusBlueFront extends LinearOpMode {
         }
 
         Trajectory traj1a = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(25,1),Math.toRadians(30))
+                .splineTo(new Vector2d(30,-6),Math.toRadians(0))
                 .build();
         Trajectory traj2a = drive.trajectoryBuilder(traj1a.end())
-                .back(10)
-                .splineTo(new Vector2d(32,28),Math.toRadians(-90))
+                .back(15)
                 .build();
         Trajectory traj3a = drive.trajectoryBuilder(traj2a.end())
-                .forward(8)
+                .strafeRight(-11)
                 .build();
         Trajectory traj4a = drive.trajectoryBuilder(traj3a.end())
-                .back(4)
+                .splineTo(new Vector2d(65,-9),Math.toRadians(90))
                 .build();
         Trajectory traj5a = drive.trajectoryBuilder(traj4a.end())
-                .back(3)
+                .splineTo(new Vector2d(65,-40),Math.toRadians(90))
+                .build();
+        Trajectory traj6a = drive.trajectoryBuilder(traj5a.end())
+                .splineTo(new Vector2d(40,-83), Math.toRadians(90))
+                .build();
+        Trajectory traj7a = drive.trajectoryBuilder(traj6a.end())
+                .splineTo(new Vector2d(40,-90), Math.toRadians(90))
+                .build();
+        Trajectory traj8a = drive.trajectoryBuilder(traj7a.end())
+                .back(8)
                 .build();
 
         Trajectory traj1b = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(28,-5),Math.toRadians(0))
+                .splineTo(new Vector2d(43, 0), Math.toRadians(180))
                 .build();
         Trajectory traj2b = drive.trajectoryBuilder(traj1b.end())
-                .back(10)
-                .splineTo(new Vector2d(26,28),Math.toRadians(-90))
+                .back(20)
                 .build();
         Trajectory traj3b = drive.trajectoryBuilder(traj2b.end())
-                .forward(8)
+                .splineTo(new Vector2d(60, -60), Math.toRadians(90))
                 .build();
         Trajectory traj4b = drive.trajectoryBuilder(traj3b.end())
-                .back(4)
+                .splineTo(new Vector2d(25,-85), Math.toRadians(90))
                 .build();
         Trajectory traj5b = drive.trajectoryBuilder(traj4b.end())
-                .back(3)
+                .forward(8)
+                .build();
+        Trajectory traj6b = drive.trajectoryBuilder(traj5b.end())
+                .back(8)
+                .build();
+        Trajectory traj7b = drive.trajectoryBuilder(traj6b.end())
+                .back(8)
                 .build();
 
         Trajectory traj1c = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(25,-13),Math.toRadians(-30))
+                .splineTo(new Vector2d(33, -6), Math.toRadians(90))
                 .build();
         Trajectory traj2c = drive.trajectoryBuilder(traj1c.end())
                 .back(10)
-                .splineTo(new Vector2d(20,28),Math.toRadians(-90))
                 .build();
         Trajectory traj3c = drive.trajectoryBuilder(traj2c.end())
-                .forward(8)
+                .strafeLeft(20)
                 .build();
         Trajectory traj4c = drive.trajectoryBuilder(traj3c.end())
-                .back(4)
+                .splineTo(new Vector2d(55,-60),Math.toRadians(90))
                 .build();
         Trajectory traj5c = drive.trajectoryBuilder(traj4c.end())
-                .back(3)
+                .splineTo(new Vector2d(25,-83), Math.toRadians(90))
                 .build();
-
-        //Cycle trajectories
-        Pose2d end = new Pose2d();
-        Trajectory trajCycle1 = drive.trajectoryBuilder(end)
-                .splineTo(new Vector2d(60, 20), Math.toRadians(-80))
+        Trajectory traj6c = drive.trajectoryBuilder(traj5c.end())
+                .forward(9)
                 .build();
-
-        double stackDist = 50;
-        Trajectory trajCycle2 = drive.trajectoryBuilder(trajCycle1.end())
-                .forward(stackDist)
-                .build();
-        TrajectorySequence trajCycle22 = drive.trajectorySequenceBuilder(trajCycle2.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .forward(7.5)
-                .build();
-        Trajectory trajCycle3 = drive.trajectoryBuilder(trajCycle22.end())
+        Trajectory traj7c = drive.trajectoryBuilder(traj6c.end())
                 .back(8)
                 .build();
-        //over to next claw
-        double strafeDist = 4;
-        TrajectorySequence trajCycle3b = drive.trajectorySequenceBuilder(trajCycle3.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .strafeLeft(strafeDist)
-                .forward(8)
-                .build();
-        //Cycle backwards
-        TrajectorySequence trajCycle4 = drive.trajectorySequenceBuilder(trajCycle3b.end())
-                .back(10)
-                .splineTo(new Vector2d(53, -25), Math.toRadians(-90))
-                .build();
 
-        Vector2d end2 = new Vector2d(31, -29);
-        TrajectorySequence trajCycle5 = drive.trajectorySequenceBuilder(trajCycle4.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(70, Math.toRadians(100), 12.35))
-                .splineTo(end2, Math.toRadians(-90))
-                .build();
-        TrajectorySequence trajCycle6 = drive.trajectorySequenceBuilder(trajCycle5.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .forward(7)
-                .build();
-        Trajectory trajCycle7 = drive.trajectoryBuilder(trajCycle6.end())
-                .back(4)
-                .build();
-        TrajectorySequence trajCycle8 = drive.trajectorySequenceBuilder(trajCycle7.end())
-                .forward(1)
-                .build();
+        drive.clawLeft.setPosition(leftClosePos);
+        drive.clawRight.setPosition(rightClosePos);
 
         waitForStart();
-        int cameraZone = 1;
-        switch ("Left") {
+        int cameraZone = 2;
+        switch (position) {
             case "Left":
                 drive.followTrajectory(traj1a);
                 drive.clawLeft.setPosition(leftOpenPos);
                 drive.wrist.setPosition(0.34);
                 drive.followTrajectory(traj2a);
+                drive.followTrajectory(traj3a);
+                drive.followTrajectory(traj4a);
+                drive.followTrajectory(traj5a);
+                drive.followTrajectory(traj6a);
                 drive.slide.setPower(0.9);
                 drive.slide.setTargetPosition(1300);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 while (opModeIsActive() && drive.slide.isBusy()) {
                 }
-                drive.followTrajectory(traj3a);
+                drive.followTrajectory(traj7a);
                 drive.clawRight.setPosition(rightOpenPos);
-                drive.followTrajectory(traj4a);
+                drive.followTrajectory(traj8a);
                 drive.slide.setPower(0.7);
                 drive.slide.setTargetPosition(1);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -190,22 +169,23 @@ public class automusBlueFront extends LinearOpMode {
                 drive.clawLeft.setPosition(leftClosePos);
                 drive.clawRight.setPosition(rightClosePos);
                 drive.wrist.setPosition(0.169);
-                drive.followTrajectory(traj5a);
-                end = traj5a.end();
+                drive.followTrajectory(traj8a);
                 break;
             case "Center":
                 drive.followTrajectory(traj1b);
                 drive.clawLeft.setPosition(leftOpenPos);
                 drive.wrist.setPosition(0.34);
                 drive.followTrajectory(traj2b);
+                drive.followTrajectory(traj3b);
+                drive.followTrajectory(traj4b);
                 drive.slide.setPower(0.9);
                 drive.slide.setTargetPosition(1300);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 while (opModeIsActive() && drive.slide.isBusy()) {
                 }
-                drive.followTrajectory(traj3b);
+                drive.followTrajectory(traj5b);
                 drive.clawRight.setPosition(rightOpenPos);
-                drive.followTrajectory(traj4b);
+                drive.followTrajectory(traj6b);
                 drive.slide.setPower(0.7);
                 drive.slide.setTargetPosition(1);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -214,21 +194,24 @@ public class automusBlueFront extends LinearOpMode {
                 drive.clawLeft.setPosition(leftClosePos);
                 drive.clawRight.setPosition(rightClosePos);
                 drive.wrist.setPosition(0.169);
-                drive.followTrajectory(traj5b);
+                drive.followTrajectory(traj6b);
                 break;
             default:
                 drive.followTrajectory(traj1c);
                 drive.clawLeft.setPosition(leftOpenPos);
                 drive.wrist.setPosition(0.34);
                 drive.followTrajectory(traj2c);
+                drive.followTrajectory(traj3c);
+                drive.followTrajectory(traj4c);
+                drive.followTrajectory(traj5c);
                 drive.slide.setPower(0.9);
                 drive.slide.setTargetPosition(1300);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 while (opModeIsActive() && drive.slide.isBusy()) {
                 }
-                drive.followTrajectory(traj3c);
+                drive.followTrajectory(traj6c);
                 drive.clawRight.setPosition(rightOpenPos);
-                drive.followTrajectory(traj4c);
+                drive.followTrajectory(traj7c);
                 drive.slide.setPower(0.7);
                 drive.slide.setTargetPosition(1);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -237,71 +220,15 @@ public class automusBlueFront extends LinearOpMode {
                 drive.clawLeft.setPosition(leftClosePos);
                 drive.clawRight.setPosition(rightClosePos);
                 drive.wrist.setPosition(0.169);
-                drive.followTrajectory(traj5c);
+                drive.followTrajectory(traj7c);
+                /*drive.slide.setPower(0.9);
+                drive.slide.setTargetPosition(1300);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                while (opModeIsActive() && drive.slide.isBusy()) {
+                }
+                drive.followTrajectory(traj4c);
+                drive.clawRight.setPosition(0.27);*/
+                break;
         }
-        //Cycling
-        trajCycle1 = drive.trajectoryBuilder(end)
-                .splineTo(new Vector2d(51, 20), Math.toRadians(-87))
-                .build();
-        drive.followTrajectory(trajCycle1);
-        trajCycle2 = drive.trajectoryBuilder(trajCycle1.end())
-                .forward(stackDist)
-                .build();
-        drive.followTrajectory(trajCycle2);
-        drive.slide.setTargetPosition(390);
-        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (opModeIsActive() && drive.slide.isBusy()) {
-        }
-        trajCycle22 = drive.trajectorySequenceBuilder(trajCycle2.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .forward(7)
-                .build();
-        drive.followTrajectorySequence(trajCycle22);
-        sleep(200);
-        //grab and move left
-        drive.clawLeft.setPosition(leftClosePos);
-        sleep(200);
-        drive.followTrajectory(trajCycle3);
-        drive.slide.setPower(0.7);
-        drive.slide.setTargetPosition(320);
-        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (opModeIsActive() && drive.slide.isBusy()) {
-        }
-        trajCycle3b = drive.trajectorySequenceBuilder(trajCycle3.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .strafeLeft(strafeDist)
-                .forward(8)
-                .build();
-        drive.followTrajectorySequence(trajCycle3b);
-        drive.clawRight.setPosition(rightClosePos);
-        sleep(200);
-        drive.wrist.setPosition(0.34);
-        drive.followTrajectorySequence(trajCycle4);
-        trajCycle5 = drive.trajectorySequenceBuilder(trajCycle4.end())
-                .splineTo(end2, Math.toRadians(-90))
-                .build();
-        drive.followTrajectorySequence(trajCycle5);
-        trajCycle6 = drive.trajectorySequenceBuilder(trajCycle5.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .forward(8)
-                .build();
-        //cycle slidesd up
-        drive.slide.setPower(0.9);
-        drive.slide.setTargetPosition(1300);
-        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (opModeIsActive() && drive.slide.isBusy()) {
-        }
-        //forward and drop
-        drive.followTrajectorySequence(trajCycle6);
-        drive.clawLeft.setPosition(leftOpenPos);
-        drive.clawRight.setPosition(rightOpenPos);
-        //back and slide down
-        drive.slide.setPower(0.7);
-        drive.slide.setTargetPosition(1);
-        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (opModeIsActive() && drive.slide.isBusy()) {
-        }
-        drive.wrist.setPosition(0.169);
-        drive.followTrajectory(trajCycle7);
     }
 }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.pandara506;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+//import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -74,14 +75,13 @@ public class TeleOpp extends LinearOpMode {
             } else if(!gamepad1.x){
                 drive.setWeightedDrivePower(
                         new Pose2d(
-                                -(Math.atan(4 * gamepad1.left_stick_y) / Math.atan(5)) * Math.max(Math.abs(1.38 - gamepad1.left_trigger), 0.2),
-                                -(Math.atan(4 * gamepad1.left_stick_x) / Math.atan(5)) * Math.max(Math.abs(1.6 - gamepad1.left_trigger), 0.2),
-                                -(Math.atan(4 * gamepad1.right_stick_x) / Math.atan(5)) * Math.max(Math.abs(1.4 - gamepad1.left_trigger), 0.2)
+                                -(4 * gamepad1.left_stick_y / 5) * Math.max(Math.abs(1.38 - gamepad1.left_trigger), 0.2),
+                                -(4 * gamepad1.left_stick_x / 5) * Math.max(Math.abs(1.6 - gamepad1.left_trigger), 0.2),
+                                -(4 * gamepad1.right_stick_x / 5) * Math.max(Math.abs(1.4 - gamepad1.left_trigger), 0.2)
                         )
                 );
                 pressingx = false;
             }
-
             drive.update();
 
             if(gamepad1.left_bumper) {clawMode = "right";}
