@@ -16,9 +16,9 @@ import com.qualcomm.robotcore.util.WebHandlerManager;
 
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
-import org.firstinspires.ftc.teamcode.pandara506.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.pandara506.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.pandara506.drive.StandardTrackingWheelLocalizer;
+import org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants;
+import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
+import org.firstinspires.ftc.teamcode.pandara506.roadrunner.StandardTrackingWheelLocalizer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,13 +65,13 @@ public final class LogFiles {
         public double maxAngVel = DriveConstants.MAX_ANG_VEL;
         public double maxAngAccel = DriveConstants.MAX_ANG_ACCEL;
 
-        public double mecTransP = SampleMecanumDrive.TRANSLATIONAL_PID.kP;
-        public double mecTransI = SampleMecanumDrive.TRANSLATIONAL_PID.kI;
-        public double mecTransD = SampleMecanumDrive.TRANSLATIONAL_PID.kD;
-        public double mecHeadingP = SampleMecanumDrive.HEADING_PID.kP;
-        public double mecHeadingI = SampleMecanumDrive.HEADING_PID.kI;
-        public double mecHeadingD = SampleMecanumDrive.HEADING_PID.kD;
-        public double mecLateralMultiplier = SampleMecanumDrive.LATERAL_MULTIPLIER;
+        public double mecTransP = Hardware.TRANSLATIONAL_PID.kP;
+        public double mecTransI = Hardware.TRANSLATIONAL_PID.kI;
+        public double mecTransD = Hardware.TRANSLATIONAL_PID.kD;
+        public double mecHeadingP = Hardware.HEADING_PID.kP;
+        public double mecHeadingI = Hardware.HEADING_PID.kI;
+        public double mecHeadingD = Hardware.HEADING_PID.kD;
+        public double mecLateralMultiplier = Hardware.LATERAL_MULTIPLIER;
         public double trackingTicksPerRev = StandardTrackingWheelLocalizer.TICKS_PER_REV;
         public double trackingWheelRadius = StandardTrackingWheelLocalizer.WHEEL_RADIUS;
         public double trackingGearRatio = StandardTrackingWheelLocalizer.GEAR_RATIO;
