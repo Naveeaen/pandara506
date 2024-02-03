@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants;
 import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
 import org.firstinspires.ftc.teamcode.pandara506.camera.PipelineBlueFront;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
@@ -27,7 +28,7 @@ public class automusBlueFront extends LinearOpMode {
 
     OpenCvCamera webCam;
     public PipelineBlueFront detector;
-    public  String position = "Insert Here";
+    public String position = "Insert Here";
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
@@ -48,7 +49,7 @@ public class automusBlueFront extends LinearOpMode {
         webCam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "wc1"), cameraMotionViewId);
         webCam.openCameraDevice();
         FtcDashboard.getInstance().startCameraStream(webCam, 0);
-        webCam.startStreaming(640,480, OpenCvCameraRotation.UPSIDE_DOWN);
+        webCam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
         webCam.setPipeline(detector);
         while (!isStarted() && !isStopRequested()) {
             position = detector.position;
@@ -67,250 +68,413 @@ public class automusBlueFront extends LinearOpMode {
             dashboardTelemetry.addData("position", position);
         }
 
-        Trajectory traj1a = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(25,1),Math.toRadians(30))
+        //left
+        TrajectorySequence traj1a = drive.trajectorySequenceBuilder(new Pose2d())
+                .lineToLinearHeading(new Pose2d(22, 12, Math.toRadians(-30)))
                 .build();
-        Trajectory traj2a = drive.trajectoryBuilder(traj1a.end())
-                .back(10)
-                .splineTo(new Vector2d(16.5,28.5),Math.toRadians(-90))
+        Trajectory traj1aa = drive.trajectoryBuilder(traj1a.end())
+                .back(2)
                 .build();
-        Trajectory traj3a = drive.trajectoryBuilder(traj2a.end())
-                .forward(8)
+        TrajectorySequence traj2a = drive.trajectorySequenceBuilder(traj1aa.end())
+                .lineToLinearHeading(new Pose2d(18, 35.5, Math.toRadians(90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.09 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(6)
                 .build();
-        Trajectory traj4a = drive.trajectoryBuilder(traj3a.end())
-                .back(10)
+        Trajectory traj2a2 = drive.trajectoryBuilder(traj2a.end())
+                .back(5)
+                .build();
+        TrajectorySequence traj3a = drive.trajectorySequenceBuilder(traj2a2.end()) //stack 1
+                .lineToLinearHeading(new Pose2d(54, 15, Math.toRadians(-90)))
+                .build();
+        TrajectorySequence traj3a2 = drive.trajectorySequenceBuilder(traj3a.end())
+                .lineToLinearHeading(new Pose2d(55, -74, Math.toRadians(-90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(4)
+                .build();
+        TrajectorySequence traj4a = drive.trajectorySequenceBuilder(traj3a2.end())
+                .back(6.5)
+                .lineToLinearHeading(new Pose2d(54, 0, Math.toRadians(-90)))
                 .build();
         TrajectorySequence traj5a = drive.trajectorySequenceBuilder(traj4a.end())
-                //.strafeRight(30)
-                .strafeLeft(15)
-                .forward(20)
+                .lineToLinearHeading(new Pose2d(23, 35.5, Math.toRadians(90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(5)
+                .build();
+        TrajectorySequence traj7a = drive.trajectorySequenceBuilder(traj5a.end())
+                .setVelConstraint(Hardware.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .lineTo(new Vector2d(29, 36.9)) // drop 2
                 .build();
 
+        TrajectorySequence traj3aa = drive.trajectorySequenceBuilder(traj7a.end())
+                .lineToLinearHeading(new Pose2d(54, 5, Math.toRadians(-90)))
+                .build();
+        TrajectorySequence traj3aa2 = drive.trajectorySequenceBuilder(traj3aa.end())
+                .lineToLinearHeading(new Pose2d(59.4, -73, Math.toRadians(-85)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(4)
+                .build();
+        TrajectorySequence traj4aa = drive.trajectorySequenceBuilder(traj3aa2.end())
+                .back(6)
+                .lineToLinearHeading(new Pose2d(54, 0, Math.toRadians(-90)))
+                .build();
+        TrajectorySequence traj5aa = drive.trajectorySequenceBuilder(traj4aa.end())
+                .lineToLinearHeading(new Pose2d(23, 35.5, Math.toRadians(90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(5)
+                .build();
+        TrajectorySequence traj6aa = drive.trajectorySequenceBuilder(traj5aa.end())
+                .setVelConstraint(Hardware.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .lineTo(new Vector2d(29, 36.5)) // drop 3.2
+                .build();
+        TrajectorySequence traj6aaa = drive.trajectorySequenceBuilder(traj6aa.end())
+                .back(3)
+                .build();
+        TrajectorySequence traj7aa = drive.trajectorySequenceBuilder(traj6aaa.end())
+                .back(3)
+                .strafeRight(20)
+                .build();
+        //center
         Trajectory traj1b = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(28,-5),Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(31, 3, Math.toRadians(-30)))
                 .build();
-        Trajectory traj2b = drive.trajectoryBuilder(traj1b.end())
-                .back(10)
-                .splineTo(new Vector2d(24.2,28.5),Math.toRadians(-90))
+        Trajectory traj1bb = drive.trajectoryBuilder(traj1b.end())
+                .back(2)
                 .build();
-        Trajectory traj3b = drive.trajectoryBuilder(traj2b.end())
-                .forward(8)
+        TrajectorySequence traj2b = drive.trajectorySequenceBuilder(traj1b.end())
+                .lineToLinearHeading(new Pose2d(24, 35.5, Math.toRadians(90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.09 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(6)
                 .build();
-        Trajectory traj4b = drive.trajectoryBuilder(traj3b.end())
-                .back(10)
+        Trajectory traj2b2 = drive.trajectoryBuilder(traj2b.end())
+                .back(5)
+                .build();
+        TrajectorySequence traj3b = drive.trajectorySequenceBuilder(traj2b2.end()) //thuis b
+                .lineToLinearHeading(new Pose2d(54, 5, Math.toRadians(-90)))
+                .build();
+        TrajectorySequence traj3b2 = drive.trajectorySequenceBuilder(traj3b.end())
+                .lineToLinearHeading(new Pose2d(55, -73, Math.toRadians(-90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(4)
+                .build();
+        TrajectorySequence traj4b = drive.trajectorySequenceBuilder(traj3b2.end())
+                .back(6.5)
+                .lineToLinearHeading(new Pose2d(54, 0, Math.toRadians(-90)))
                 .build();
         TrajectorySequence traj5b = drive.trajectorySequenceBuilder(traj4b.end())
-                //.strafeRight(20)
-                .strafeLeft(20)
-                .forward(20)
+                .lineToLinearHeading(new Pose2d(23, 35.5, Math.toRadians(90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(5)
+                .build();
+        TrajectorySequence traj7b = drive.trajectorySequenceBuilder(traj5b.end())
+                .setVelConstraint(Hardware.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .lineTo(new Vector2d(29, 37.5)) // drop 2
                 .build();
 
+        TrajectorySequence traj3bb = drive.trajectorySequenceBuilder(traj7b.end())
+                .lineToLinearHeading(new Pose2d(54, 5, Math.toRadians(-90)))
+                .build();
+        TrajectorySequence traj3bb2 = drive.trajectorySequenceBuilder(traj3bb.end())
+                .lineToLinearHeading(new Pose2d(59, -74, Math.toRadians(-85)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(4)
+                .build();
+        TrajectorySequence traj4bb = drive.trajectorySequenceBuilder(traj3bb2.end())
+                .back(6)
+                .lineToLinearHeading(new Pose2d(54, 0, Math.toRadians(-85)))
+                .build();
+        TrajectorySequence traj5bb = drive.trajectorySequenceBuilder(traj4bb.end())
+                .lineToLinearHeading(new Pose2d(23, 35.5, Math.toRadians(85)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(6)
+                .build();
+        TrajectorySequence traj6bb = drive.trajectorySequenceBuilder(traj5bb.end())
+                .setVelConstraint(Hardware.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .lineTo(new Vector2d(29, 35.5)) // drop 3
+                .build();
+        TrajectorySequence traj6bbb = drive.trajectorySequenceBuilder(traj6bb.end())
+                .back(3)
+                .build();
+        TrajectorySequence traj7bb = drive.trajectorySequenceBuilder(traj6bbb.end())
+                .back(3)
+                .strafeLeft(20)
+                .build();
+
+
+        //right
         Trajectory traj1c = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(25,-13),Math.toRadians(-30))
+                .lineToLinearHeading(new Pose2d(29, -4.4, Math.toRadians(-90)))
                 .build();
-        Trajectory traj2c = drive.trajectoryBuilder(traj1c.end())
-                .back(10)
-                .splineTo(new Vector2d(30,28.5),Math.toRadians(-90))
+        Trajectory traj1cc = drive.trajectoryBuilder(traj1c.end())
+                .back(2)
                 .build();
-        Trajectory traj3c = drive.trajectoryBuilder(traj2c.end())
-                .forward(8.5)
+        TrajectorySequence traj2c = drive.trajectorySequenceBuilder(traj1c.end())
+                .lineToLinearHeading(new Pose2d(29, 35.5, Math.toRadians(90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.09 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(6)
                 .build();
-        Trajectory traj4c = drive.trajectoryBuilder(traj3c.end())
-                .back(10)
+        Trajectory traj2c2 = drive.trajectoryBuilder(traj2c.end())
+                .back(5)
+                .build();
+        TrajectorySequence traj3c = drive.trajectorySequenceBuilder(traj2c2.end()) //thuis b
+                .lineToLinearHeading(new Pose2d(54, 5, Math.toRadians(-90)))
+                .build();
+        TrajectorySequence traj3c2 = drive.trajectorySequenceBuilder(traj3c.end())
+                .lineToLinearHeading(new Pose2d(55.74, -73, Math.toRadians(-90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(4)
+                .build();
+        TrajectorySequence traj4c = drive.trajectorySequenceBuilder(traj3c2.end())
+                .back(6.5)
+                .lineToLinearHeading(new Pose2d(54, 0, Math.toRadians(-90)))
                 .build();
         TrajectorySequence traj5c = drive.trajectorySequenceBuilder(traj4c.end())
-                //.strafeRight(15)
-                .strafeLeft(30)
-                .forward(20)
+                .lineToLinearHeading(new Pose2d(23, 35.5, Math.toRadians(90)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(5)
+                .build();
+        TrajectorySequence traj7c = drive.trajectorySequenceBuilder(traj5c.end())
+                .setVelConstraint(Hardware.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .lineTo(new Vector2d(29, 37.5)) // drop 2
                 .build();
 
-        //Cycle trajectories
-        /*Pose2d end = new Pose2d();
-        Trajectory trajCycle1 = drive.trajectoryBuilder(end)
-                .splineTo(new Vector2d(60, 20), Math.toRadians(-80))
+        TrajectorySequence traj3cc = drive.trajectorySequenceBuilder(traj7c.end())
+                .lineToLinearHeading(new Pose2d(54, 5, Math.toRadians(-90)))
                 .build();
-
-        double stackDist = 50;
-        Trajectory trajCycle2 = drive.trajectoryBuilder(trajCycle1.end())
-                .forward(stackDist)
+        TrajectorySequence traj3cc2 = drive.trajectorySequenceBuilder(traj3cc.end())
+                .lineToLinearHeading(new Pose2d(59.7, -74, Math.toRadians(-85)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(4)
                 .build();
-        TrajectorySequence trajCycle22 = drive.trajectorySequenceBuilder(trajCycle2.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .forward(7.5)
+        TrajectorySequence traj4cc = drive.trajectorySequenceBuilder(traj3cc2.end())
+                .back(6)
+                .lineToLinearHeading(new Pose2d(54, 0, Math.toRadians(-85)))
                 .build();
-        Trajectory trajCycle3 = drive.trajectoryBuilder(trajCycle22.end())
-                .back(8)
+        TrajectorySequence traj5cc = drive.trajectorySequenceBuilder(traj4cc.end())
+                .lineToLinearHeading(new Pose2d(23, 35.5, Math.toRadians(85)))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .forward(6)
                 .build();
-        //over to next claw
-        double strafeDist = 4;
-        TrajectorySequence trajCycle3b = drive.trajectorySequenceBuilder(trajCycle3.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .strafeLeft(strafeDist)
-                .forward(8)
+        TrajectorySequence traj6cc = drive.trajectorySequenceBuilder(traj5cc.end())
+                .setVelConstraint(Hardware.getVelocityConstraint(0.25 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .lineTo(new Vector2d(29, 35.5)) // drop 3
                 .build();
-        //Cycle backwards
-        TrajectorySequence trajCycle4 = drive.trajectorySequenceBuilder(trajCycle3b.end())
-                .back(10)
-                .splineTo(new Vector2d(53, -25), Math.toRadians(-90))
+        TrajectorySequence traj6ccc = drive.trajectorySequenceBuilder(traj6cc.end())
+                .back(3)
                 .build();
-
-        Vector2d end2 = new Vector2d(31, -29);
-        TrajectorySequence trajCycle5 = drive.trajectorySequenceBuilder(trajCycle4.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(70, Math.toRadians(100), 12.35))
-                .splineTo(end2, Math.toRadians(-90))
+        TrajectorySequence traj7cc = drive.trajectorySequenceBuilder(traj6ccc.end())
+                .back(3)
+                .strafeLeft(20)
                 .build();
-        TrajectorySequence trajCycle6 = drive.trajectorySequenceBuilder(trajCycle5.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .forward(7)
-                .build();
-        Trajectory trajCycle7 = drive.trajectoryBuilder(trajCycle6.end())
-                .back(4)
-                .build();
-        TrajectorySequence trajCycle8 = drive.trajectorySequenceBuilder(trajCycle7.end())
-                .forward(1)
-                .build();*/
 
         waitForStart();
-        int cameraZone = 1;
         switch (position) {
             case "Left":
-                drive.followTrajectory(traj1a);
+                drive.followTrajectorySequence(traj1a);
                 drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectory(traj1aa);
+                drive.clawLeft.setPosition(leftClosePos);
+                sleep(96);
                 drive.wrist.setPosition(0.34);
-                drive.followTrajectory(traj2a);
                 drive.slide.setPower(0.9);
                 drive.slide.setTargetPosition(1300);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()) {
-                }
-                drive.followTrajectory(traj3a);
-                sleep(200);
+                drive.followTrajectorySequence(traj2a); // drive to backboard 1
                 drive.clawRight.setPosition(rightOpenPos);
-                sleep(200);
-                drive.followTrajectory(traj4a);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(1);
+                drive.slide.setTargetPosition(250);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-                }
+                sleep(300);
+                drive.wrist.setPosition(0.169);
+                drive.followTrajectory(traj2a2);
+                drive.clawRight.setPosition(rightClosePos);
+                drive.followTrajectorySequence(traj3a); // drive to stack 1
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectorySequence(traj3a2); // drive to stack 1.2
+                drive.clawLeft.setPosition(leftClosePos);
+                drive.clawRight.setPosition(rightClosePos);
+                sleep(200);
+                drive.slide.setTargetPosition(260);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.wrist.setPosition(0.34);
+                drive.followTrajectorySequence(traj4a);
+                drive.slide.setTargetPosition(1690);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.followTrajectorySequence(traj5a); // drive to backboard 2
+                sleep(100);
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                sleep(200);
+                drive.followTrajectorySequence(traj7a);
+                drive.clawLeft.setPosition(leftClosePos);
+                drive.clawRight.setPosition(rightClosePos);
+                drive.slide.setTargetPosition(90);
+                drive.wrist.setPosition(0.169);
+
+                drive.followTrajectorySequence(traj3aa);
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectorySequence(traj3aa2);
+                drive.clawLeft.setPosition(leftClosePos); // drive to stack 2
+                drive.clawRight.setPosition(rightClosePos);
+                sleep(120);
+                drive.slide.setTargetPosition(100);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.wrist.setPosition(0.34);
+                drive.followTrajectorySequence(traj4aa);
+                drive.slide.setTargetPosition(1700);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.followTrajectorySequence(traj5aa);
+                sleep(100);
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectorySequence(traj6aa);
+                drive.slide.setTargetPosition(0);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                sleep(300);
+                drive.followTrajectorySequence(traj6aaa);
                 drive.clawLeft.setPosition(leftClosePos);
                 drive.clawRight.setPosition(rightClosePos);
                 drive.wrist.setPosition(0.169);
-                drive.followTrajectorySequence(traj5a);
-                //end = traj5a.end();
+                drive.followTrajectorySequence(traj7aa);
+
                 break;
             case "Center":
                 drive.followTrajectory(traj1b);
                 drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectory(traj1bb);
+                drive.clawLeft.setPosition(leftClosePos);
                 drive.wrist.setPosition(0.34);
-                drive.followTrajectory(traj2b);
+                //drive.followTrajectory(traj3a);
                 drive.slide.setPower(0.9);
                 drive.slide.setTargetPosition(1300);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()) {
-                }
-                drive.followTrajectory(traj3b);
-                sleep(200);
+                drive.followTrajectorySequence(traj2b); // drive to backboard 1
                 drive.clawRight.setPosition(rightOpenPos);
                 sleep(200);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(1);
+                drive.slide.setTargetPosition(218);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-                }
+                drive.wrist.setPosition(0.169);
+                drive.followTrajectory(traj2b2);
+                drive.clawRight.setPosition(rightClosePos);
+                drive.followTrajectorySequence(traj3b); // drive to stack 1
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectorySequence(traj3b2);
                 drive.clawLeft.setPosition(leftClosePos);
                 drive.clawRight.setPosition(rightClosePos);
+                sleep(200);
+                drive.slide.setTargetPosition(223);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.wrist.setPosition(0.34);
+                drive.followTrajectorySequence(traj4b);
+                drive.slide.setTargetPosition(2000);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.followTrajectorySequence(traj5b); // drive to backboard 2
+                sleep(100);
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                sleep(200);
+                drive.followTrajectorySequence(traj7b);
+                drive.clawLeft.setPosition(leftClosePos);
+                drive.clawRight.setPosition(rightClosePos);
+                drive.slide.setTargetPosition(90);
                 drive.wrist.setPosition(0.169);
-                drive.followTrajectorySequence(traj5b);
+
+                drive.followTrajectorySequence(traj3bb);
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectorySequence(traj3bb2);
+                drive.clawLeft.setPosition(leftClosePos); // drive to stack 2
+                drive.clawRight.setPosition(rightClosePos);
+                sleep(120);
+                drive.slide.setTargetPosition(100);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.wrist.setPosition(0.34);
+                drive.followTrajectorySequence(traj4bb);
+                drive.slide.setTargetPosition(2000);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.followTrajectorySequence(traj5bb);
+                sleep(100);
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectorySequence(traj6bb);
+                drive.slide.setTargetPosition(0);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                sleep(100);
+                drive.clawLeft.setPosition(leftClosePos);
+                drive.clawRight.setPosition(rightClosePos);
+                drive.followTrajectorySequence(traj6bbb);
+                drive.wrist.setPosition(0.169);
+                drive.followTrajectorySequence(traj7bb);
+
                 break;
             default:
                 drive.followTrajectory(traj1c);
                 drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectory(traj1cc);
+                drive.clawLeft.setPosition(leftClosePos);
                 drive.wrist.setPosition(0.34);
-                drive.followTrajectory(traj2c);
+                //drive.followTrajectory(traj3c);
                 drive.slide.setPower(0.9);
                 drive.slide.setTargetPosition(1300);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()) {
-                }
-                drive.followTrajectory(traj3c);
-                sleep(200);
+                drive.followTrajectorySequence(traj2c); // drive to backboard 1
                 drive.clawRight.setPosition(rightOpenPos);
                 sleep(200);
-                drive.followTrajectory(traj4c);
-                drive.slide.setPower(0.7);
-                drive.slide.setTargetPosition(1);
+                drive.slide.setTargetPosition(235);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                while (opModeIsActive() && drive.slide.isBusy()){
-                }
+                drive.wrist.setPosition(0.169);
+                drive.followTrajectory(traj2c2);
+                drive.clawRight.setPosition(rightClosePos);
+                drive.followTrajectorySequence(traj3c); // drive to stack 1
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectorySequence(traj3c2);
                 drive.clawLeft.setPosition(leftClosePos);
                 drive.clawRight.setPosition(rightClosePos);
+                sleep(200);
+                drive.slide.setTargetPosition(245);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.wrist.setPosition(0.34);
+                drive.followTrajectorySequence(traj4c);
+                drive.slide.setTargetPosition(2000);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.followTrajectorySequence(traj5c); // drive to backboard 2
+                sleep(100);
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                sleep(200);
+                drive.followTrajectorySequence(traj7c);
+                drive.clawLeft.setPosition(leftClosePos);
+                drive.clawRight.setPosition(rightClosePos);
+                drive.slide.setTargetPosition(90);
                 drive.wrist.setPosition(0.169);
-                drive.followTrajectorySequence(traj5c);
+
+                drive.followTrajectorySequence(traj3cc);
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectorySequence(traj3cc2);
+                drive.clawLeft.setPosition(leftClosePos); // drive to stack 2
+                drive.clawRight.setPosition(rightClosePos);
+                sleep(120);
+                drive.slide.setTargetPosition(100);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.wrist.setPosition(0.34);
+                drive.followTrajectorySequence(traj4cc);
+                drive.slide.setTargetPosition(2000);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.followTrajectorySequence(traj5cc);
+                sleep(100);
+                drive.clawRight.setPosition(rightOpenPos);
+                drive.clawLeft.setPosition(leftOpenPos);
+                drive.followTrajectorySequence(traj6cc);
+                drive.slide.setTargetPosition(0);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.clawLeft.setPosition(leftClosePos);
+                drive.clawRight.setPosition(rightClosePos);
+                drive.followTrajectorySequence(traj6ccc);
+                drive.wrist.setPosition(0.169);
+                drive.followTrajectorySequence(traj7cc);
         }
-        //Cycling
-        /*trajCycle1 = drive.trajectoryBuilder(end)
-                .splineTo(new Vector2d(51, 20), Math.toRadians(-87))
-                .build();
-        drive.followTrajectory(trajCycle1);
-        trajCycle2 = drive.trajectoryBuilder(trajCycle1.end())
-                .forward(stackDist)
-                .build();
-        drive.followTrajectory(trajCycle2);
-        drive.slide.setTargetPosition(390);
-        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (opModeIsActive() && drive.slide.isBusy()) {
-        }
-        trajCycle22 = drive.trajectorySequenceBuilder(trajCycle2.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .forward(7)
-                .build();
-        drive.followTrajectorySequence(trajCycle22);
-        sleep(200);
-        //grab and move left
-        drive.clawLeft.setPosition(leftClosePos);
-        sleep(200);
-        drive.followTrajectory(trajCycle3);
-        drive.slide.setPower(0.7);
-        drive.slide.setTargetPosition(320);
-        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (opModeIsActive() && drive.slide.isBusy()) {
-        }
-        trajCycle3b = drive.trajectorySequenceBuilder(trajCycle3.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .strafeLeft(strafeDist)
-                .forward(8)
-                .build();
-        drive.followTrajectorySequence(trajCycle3b);
-        drive.clawRight.setPosition(rightClosePos);
-        sleep(200);
-        drive.wrist.setPosition(0.34);
-        drive.followTrajectorySequence(trajCycle4);
-        trajCycle5 = drive.trajectorySequenceBuilder(trajCycle4.end())
-                .splineTo(end2, Math.toRadians(-90))
-                .build();
-        drive.followTrajectorySequence(trajCycle5);
-        trajCycle6 = drive.trajectorySequenceBuilder(trajCycle5.end())
-                .setVelConstraint(SampleMecanumDrive.getVelocityConstraint(10, Math.toRadians(364.63481051106623), 12.35))
-                .forward(8)
-                .build();
-        //cycle slidesd up
-        drive.slide.setPower(0.9);
-        drive.slide.setTargetPosition(1300);
-        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (opModeIsActive() && drive.slide.isBusy()) {
-        }
-        //forward and drop
-        drive.followTrajectorySequence(trajCycle6);
-        drive.clawLeft.setPosition(leftOpenPos);
-        drive.clawRight.setPosition(rightOpenPos);
-        //back and slide down
-        drive.slide.setPower(0.7);
-        drive.slide.setTargetPosition(1);
-        drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (opModeIsActive() && drive.slide.isBusy()) {
-        }
-        drive.wrist.setPosition(0.169);
-        drive.followTrajectory(trajCycle7);*/
     }
 }

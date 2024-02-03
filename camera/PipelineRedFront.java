@@ -13,15 +13,15 @@ public class PipelineRedFront extends OpenCvPipeline {
 
     public static int matCrowStart = 150;
     public static int matCrowEnd = 200;
-    public static int matCcolStart = 325;
+    public static int matCcolStart = 250;
 
-    public static int matCcolEnd = 350;
+    public static int matCcolEnd = 275;
 
 
     public static int matRrowStart = 370;
     public static int matRrowEnd = 425; //610
-    public static int matRcolStart = 325;
-    public static int matRcolEnd = 350;
+    public static int matRcolStart = 250;
+    public static int matRcolEnd = 275;
 
 
     public double leftRed = 0;

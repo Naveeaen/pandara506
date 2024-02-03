@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode.pandara506.teleOp;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 //import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
 
@@ -15,19 +17,32 @@ public class TeleOpp extends LinearOpMode {
 
         telemetry.addData("status: ", "helloooo");
         telemetry.update();
+        double leftOpenPos = drive.clawLeftOpenPos;
+        double leftClosePos = drive.clawLeftClosePos;
+        double rightOpenPos = drive.clawRightOpenPos;
+        double rightClosePos = drive.clawRightClosePos;
 
+        drive.clawLeft.setPosition(leftOpenPos);
+        drive.clawRight.setPosition(rightOpenPos);
+
+        /*if(!drive.touchSensor.getState()){
+            drive.slide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            drive.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            drive.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            drive.slide.setPower(0);
+        }
+        if(drive.touchSensor.getState()){
+            drive.slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            drive.slide.setPower(-1);
+        }*/
 
         waitForStart();
 
         //claw vars
         String clawMode = "";
-        boolean leftOpen = true;
-        boolean rightOpen = true;
-        boolean bothOpen = true;
-        double leftOpenPos = drive.clawLeftOpenPos;
-        double leftClosePos = drive.clawLeftClosePos;
-        double rightOpenPos = drive.clawRightOpenPos;
-        double rightClosePos = drive.clawRightClosePos;
+        boolean leftOpen = false;
+        boolean rightOpen = false;
+        boolean bothOpen = false;
 
         //pressing buttons
         boolean pressingy = false;
@@ -51,9 +66,9 @@ public class TeleOpp extends LinearOpMode {
         boolean pressingstickR = false;
 
         boolean launchLaunched = false;
-        double launchPos = 0.198;
+        double launchPos = 0.3;
         double launchPosSpeed= 0;
-        String mode = "slide";
+        String mode = "slides";
         boolean pressingback = false;
 
         double wristPos = 0.54;
@@ -79,29 +94,24 @@ public class TeleOpp extends LinearOpMode {
                                 -(4 * gamepad1.right_stick_x / 5) * Math.max(Math.abs(1.4 - gamepad1.left_trigger), 0.2)
                         )
                 );
-                pressingx = false;
+                /*Pose2d poseEstimate = drive.getPoseEstimate();
+                Vector2d input = new Vector2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x).rotated(-poseEstimate.getHeading());
+
+                drive.setWeightedDrivePower(new Pose2d(input.getX(), input.getY(), -gamepad1.right_stick_x));
+                */pressingx = false;
             }
             drive.update();
 
-            if(gamepad1.left_bumper) {clawMode = "right";}
-            else if(gamepad1.right_bumper) {clawMode = "left";}
+            if(gamepad1.left_bumper)            {clawMode = "right";}
+            else if(gamepad1.right_bumper)      {clawMode = "left";}
             else if(gamepad1.right_trigger > 0) {clawMode = "bump";}
             else {clawMode = "none";}
 
             telemetry.addData("Claw", clawMode);
-            if(leftOpen){
-                telemetry.addData("Left claw is open", "");
-            }
-            else if(rightOpen){
-                telemetry.addData("Right claw is open", "");
-            }
-            else if(bothOpen){
-                telemetry.addData("Claw is open", "");
-            } else{
-                telemetry.addData("Claw is closed", "");
-            }
-            telemetry.update();
-
+                 if(leftOpen && !rightOpen)  telemetry.addData("Claw state", "Left open");
+            else if(rightOpen) telemetry.addData("Claw state", "Right open");
+            else if(bothOpen)  telemetry.addData("Claw state", "Both open");
+            else               telemetry.addData("Claw state", "Both closed");
 
             //biancas claw code (much better (same concept as mine but looks nicer))
             if(clawMode.equals("right") && !pressinga){
@@ -158,43 +168,60 @@ public class TeleOpp extends LinearOpMode {
 
             //slide to hanger
             if(gamepad2.back && !pressingback){
-                if(mode.equals("slide")){
-                    mode = "hang";
+                if(mode.equals("slides")){
+                    mode = "hanger";
 
-                } else if(mode.equals("hang")){
-                    mode = "slide";
+                } else if(mode.equals("hanger")){
+                    mode = "slides";
                 }
                 pressingback = true;
             } else if(!gamepad2.back){
                 pressingback = false;
             }
-            telemetry.addData("slide mode", mode);
-            telemetry.addData("pressingback", pressingback);
-            telemetry.update();
+            telemetry.addData("(back toggle) Joystick controlling", mode);
+
+            /*if(drive.touchSensor.getState() == true){
+                //drive.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                //drive.slide.setPower(0);
+                telemetry.addData("Touch sensor", "untouched");
+            } else{
+                telemetry.addData("Touch sensor", "touched");
+            }*/
 
             //slides
-            if(mode.equals("slide")) {
+            if(mode.equals("slides")) {
+                drive.slide.setTargetPosition(position);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                if(drive.touchSensor.getState() == true){
+                    drive.slide.setPower(0.7);
+                    telemetry.addData("Touch sensor", "untouched");
+                } else{
+                    drive.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.slide.setPower(0);
+                    telemetry.addData("Touch sensor", "touched. slides at " + drive.slide.getCurrentPosition());
+                }
                 //slide restrictions
-                if (drive.slide.getCurrentPosition() < 20 && gamepad2.left_stick_y > 0) {
-                    drive.slide.setPower(0);
-                } else if (drive.slide.getCurrentPosition() > 3900 && gamepad2.left_stick_y < 0) {
-                    drive.slide.setPower(0);
-                } else {
+                if (drive.slide.getCurrentPosition() <= 0 && gamepad2.left_stick_y > 0) {
+                    position = 0;
+                } else if (drive.slide.getCurrentPosition() > 3200 && gamepad2.left_stick_y < 0) {
+                    position = 3200;
+                } else if(gamepad2.left_stick_y != 0){
                     //drive controlled power
-                    drive.slide.setPower(-gamepad2.left_stick_y);
-                    /*if(gamepad2.left_stick_y < 0)
-                        position += 1;
-                    if(gamepad2.left_stick_y > 0)
-                        position -= 1;
+                    //drive.slide.setPower(-gamepad2.left_stick_y);
                     drive.slide.setPower(1);
-                    drive.slide.setTargetPosition(position);
-                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);*/
+                    if(gamepad2.left_stick_y < 0)
+                        position += 50 * -gamepad2.left_stick_y;
+                    if(gamepad2.left_stick_y > 0)
+                        position += 50 * -gamepad2.left_stick_y;
                 }
             }
 
+            telemetry.update();
 
             //hanger
-            if(mode.equals("hang")){
+            if(mode.equals("hanger")){
                 drive.slide.setPower(0.8);
                 drive.slide.setTargetPosition(10);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -214,26 +241,27 @@ public class TeleOpp extends LinearOpMode {
             if (drive.slide.getCurrentPosition() > 100) {
                 drive.wrist.setPosition(0.34);
             } else {
-                drive.wrist.setPosition(0.169);
+                drive.wrist.setPosition(0.160);
             }
 
 
             //max up pos = 0.119
             //final other pos = 0.36
             //"launcher"
-            drive.launchPadPivot.setPosition(launchPos);
-            launchPos += launchPosSpeed;
-            if(gamepad2.right_stick_y < 0 && launchPos > 0.36) {
-                launchPosSpeed = 0;
-            } else if(gamepad2.right_stick_y > 0 && launchPos < 0.119) {
-                launchPosSpeed = 0;
-            } else if(gamepad2.right_stick_y < 0){
-                launchPosSpeed = .01;
-            } else if(gamepad2.right_stick_y > 0){
-                launchPosSpeed = -.01;
-            } else if(gamepad2.right_stick_y == 0){
-                launchPosSpeed = 0;
+            if(gamepad2.right_stick_y != 0) {
+                drive.launchPadPivot.setPosition(launchPos);
+                launchPos += launchPosSpeed;
+                if(gamepad2.right_stick_y < 0){
+                    if(launchPos > 0.36) launchPosSpeed = 0;
+                    else launchPosSpeed = .01;
+                } else if(gamepad2.right_stick_y > 0){
+                    if(launchPos > 0.119) launchPosSpeed = 0;
+                    else launchPosSpeed = -.01;
+                } else{
+                    launchPosSpeed = 0;
+                }
             }
+
 
             //0.642
             //1

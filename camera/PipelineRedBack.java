@@ -12,22 +12,21 @@ public class PipelineRedBack extends OpenCvPipeline {
     public String position = "Right";
     public static int matLrowStart = 60;
     public static int matLrowEnd = 110;
-    public static int matLcolStart = 325;
-    public static int matLcolEnd = 350
-            ;
+    public static int matLcolStart = 250;
+    public static int matLcolEnd = 275;
 
 
     public static int matCrowStart = 305;
     public static int matCrowEnd = 355;
-    public static int matCcolStart = 325;
-    public static int matCcolEnd = 350;
+    public static int matCcolStart = 250;
+    public static int matCcolEnd = 275;
 
 
     public static int matRrowStart = 540;
     public static int matRrowEnd = 600; //610
-    public static int matRcolStart = 325;
+    public static int matRcolStart = 250;
 
-    public static int matRcolEnd = 350;
+    public static int matRcolEnd = 275;
 
 
     public double leftRed = 0;

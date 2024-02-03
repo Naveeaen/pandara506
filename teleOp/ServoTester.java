@@ -14,7 +14,7 @@ public class ServoTester extends LinearOpMode {
         Hardware drive = new Hardware(hardwareMap);
         waitForStart();
 
-        double position = 0.15;
+        double position = 0;
         double actualPosition = 0;
         double position2 = 0;
         double actualPosition2 = 0;

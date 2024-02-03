@@ -21,6 +21,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -78,7 +79,7 @@ public class Hardware extends MecanumDrive {
     public Servo wrist;
     public Servo launchPadPivot;
     public Servo initiateLaunch;
-
+    public DigitalChannel touchSensor;
     private IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
@@ -90,7 +91,7 @@ public class Hardware extends MecanumDrive {
         super(org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants.kV, org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants.kA, org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants.kStatic, org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants.TRACK_WIDTH, org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants.TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.07);
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
@@ -154,7 +155,7 @@ public class Hardware extends MecanumDrive {
             slide = null;
         }
         try{
-            hanger = hardwareMap.get(DcMotorEx.class, "cm2");
+            hanger = hardwareMap.get(DcMotorEx.class, "cm1");
             hanger.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             hanger.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
             hanger.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -189,6 +190,13 @@ public class Hardware extends MecanumDrive {
             initiateLaunch = hardwareMap.get(Servo.class, "es1");
         } catch (Exception p_exception) {
             initiateLaunch = null;
+        }
+
+        try{
+            touchSensor = hardwareMap.get(DigitalChannel.class, "ed0");
+            touchSensor.setMode(DigitalChannel.Mode.INPUT);
+        } catch (Exception p_exception){
+            touchSensor = null;
         }
 
     }
