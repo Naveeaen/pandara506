@@ -14,7 +14,7 @@ public class ServoTester extends LinearOpMode {
         Hardware drive = new Hardware(hardwareMap);
         waitForStart();
 
-        double position = 0;
+        double position = 0.2;
         double actualPosition = 0;
         double position2 = 0;
         double actualPosition2 = 0;
@@ -41,7 +41,7 @@ public class ServoTester extends LinearOpMode {
             //trigger init = 0.623
             //trigger pull = 1
 
-            drive.launchPadPivot.setPosition(position);
+            //drive.launchPadPivot.setPosition(position);
             actualPosition = drive.launchPadPivot.getPosition();
             if(gamepad1.a && !pressinga) {
                 position += .01;

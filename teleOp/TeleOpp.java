@@ -56,6 +56,7 @@ public class TeleOpp extends LinearOpMode {
         boolean presseda = false;
         boolean pressedb = false;
         boolean pressingx = false;
+        boolean pressingx2 = false;
         boolean pressingb = false;
         boolean pressedx = false;
         boolean right_y_up = false;
@@ -194,22 +195,17 @@ public class TeleOpp extends LinearOpMode {
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 if(drive.touchSensor.getState() == true){
-                    drive.slide.setPower(0.7);
                     telemetry.addData("Touch sensor", "untouched");
                 } else{
                     drive.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    position = 0;
                     drive.slide.setPower(0);
                     telemetry.addData("Touch sensor", "touched. slides at " + drive.slide.getCurrentPosition());
                 }
-                //slide restrictions
-                if (drive.slide.getCurrentPosition() <= 0 && gamepad2.left_stick_y > 0) {
-                    position = 0;
-                } else if (drive.slide.getCurrentPosition() > 3200 && gamepad2.left_stick_y < 0) {
+                if (drive.slide.getCurrentPosition() > 3200 && gamepad2.left_stick_y < 0) {
                     position = 3200;
                 } else if(gamepad2.left_stick_y != 0){
-                    //drive controlled power
-                    //drive.slide.setPower(-gamepad2.left_stick_y);
                     drive.slide.setPower(1);
                     if(gamepad2.left_stick_y < 0)
                         position += 50 * -gamepad2.left_stick_y;
@@ -229,7 +225,7 @@ public class TeleOpp extends LinearOpMode {
                 //slide code copy pasted for hanger
                 if (drive.hanger.getCurrentPosition() < 10 && gamepad2.left_stick_y > 0) {
                     drive.hanger.setPower(0);
-                } else if (drive.hanger.getCurrentPosition() > 4650 && gamepad2.left_stick_y < 0) {
+                } else if (drive.hanger.getCurrentPosition() > 4500 && gamepad2.left_stick_y < 0) {
                     drive.hanger.setPower(0);
                 } else {
                     drive.hanger.setPower(-gamepad2.left_stick_y);
@@ -245,21 +241,13 @@ public class TeleOpp extends LinearOpMode {
             }
 
 
-            //max up pos = 0.119
-            //final other pos = 0.36
+            //launch pos = 0.38
             //"launcher"
-            if(gamepad2.right_stick_y != 0) {
-                drive.launchPadPivot.setPosition(launchPos);
-                launchPos += launchPosSpeed;
-                if(gamepad2.right_stick_y < 0){
-                    if(launchPos > 0.36) launchPosSpeed = 0;
-                    else launchPosSpeed = .01;
-                } else if(gamepad2.right_stick_y > 0){
-                    if(launchPos > 0.119) launchPosSpeed = 0;
-                    else launchPosSpeed = -.01;
-                } else{
-                    launchPosSpeed = 0;
-                }
+            if(gamepad2.b && !pressingy){
+                drive.launchPadPivot.setPosition(0.41);
+                pressingx2 = true;
+            } else if(!gamepad2.b){
+                pressingx2= false;
             }
 
 
@@ -268,10 +256,10 @@ public class TeleOpp extends LinearOpMode {
             //launch trigger
             if(gamepad2.y && !pressingy){
                 if(!launchLaunched) {
-                    drive.initiateLaunch.setPosition(1);
+                    drive.initiateLaunch.setPosition(0.5);
                     launchLaunched = true;
                 }else{
-                    drive.initiateLaunch.setPosition(0.642);
+                    drive.initiateLaunch.setPosition(1);
                     launchLaunched = false;
                 }
                 pressingy = true;

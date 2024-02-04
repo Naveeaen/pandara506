@@ -110,7 +110,7 @@ public class automusRedBackJava extends LinearOpMode {
                 .build();
         TrajectorySequence traj4a = drive.trajectorySequenceBuilder(traj3aaa.end())
                 .lineTo(new Vector2d(3.5, 17))
-                .strafeRight(19.7)
+                .strafeRight(19.2)
                 .setVelConstraint(Hardware.getVelocityConstraint(0.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .forward(5.7)
                 .build();
@@ -163,7 +163,7 @@ public class automusRedBackJava extends LinearOpMode {
                 .build();
         TrajectorySequence traj4b = drive.trajectorySequenceBuilder(traj3bbb.end())
                 .lineTo(new Vector2d(2.5, 17))
-                .strafeRight(19.9)
+                .strafeRight(19.2)
                 .setVelConstraint(Hardware.getVelocityConstraint(0.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .forward(5.7)
                 .build();
@@ -173,13 +173,13 @@ public class automusRedBackJava extends LinearOpMode {
                 .lineTo(new Vector2d(2.5, -72))
                 .build();
         TrajectorySequence traj8b = drive.trajectorySequenceBuilder(traj7b.end())
-                .lineToLinearHeading(new Pose2d(31, -87, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(30, -87, Math.toRadians(-90)))
                 .setVelConstraint(Hardware.getVelocityConstraint(0.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .forward(6.9)
                 .build();
         TrajectorySequence traj8bb = drive.trajectorySequenceBuilder(traj8b.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .lineTo(new Vector2d(25, -92))
+                .lineTo(new Vector2d(24, -92))
                 .build();
         TrajectorySequence traj9b = drive.trajectorySequenceBuilder(traj8bb.end())
                 .back(10)
