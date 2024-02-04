@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * This is a simple routine to test turning capabilities.
  */
 @Autonomous(group = "autoRed")
-public class worseauto extends LinearOpMode {
+public class apriltagTest extends LinearOpMode {
 
     OpenCvCamera webCam;
     public PipelineRedFront detector;

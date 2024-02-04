@@ -29,6 +29,7 @@ public class automusRedFrontGolden extends LinearOpMode {
     OpenCvCamera webCam;
     public PipelineRedFront detector;
     public String position = "Insert Here";
+    public int timeout = 0;
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
@@ -177,6 +178,7 @@ public class automusRedFrontGolden extends LinearOpMode {
                 .build();
 
         waitForStart();
+        sleep(timeout);
         switch (position) {
             case "Left":
                 drive.followTrajectory(traj1a);
