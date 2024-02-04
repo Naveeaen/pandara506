@@ -29,8 +29,10 @@ public class automusBlueFront extends LinearOpMode {
     OpenCvCamera webCam;
     public PipelineBlueFront detector;
     public String position = "Insert Here";
+    public int timeout = 0;
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -267,6 +269,7 @@ public class automusBlueFront extends LinearOpMode {
                 .build();
 
         waitForStart();
+        sleep(timeout);
         switch (position) {
             case "Left":
                 drive.followTrajectorySequence(traj1a);

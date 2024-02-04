@@ -30,6 +30,7 @@ public class automusBlueBack extends LinearOpMode {
     OpenCvCamera webCam;
     public PipelineBlueBack detector;
     public  String position = "Insert Here";
+    public int timeout = 0;
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
@@ -223,6 +224,7 @@ public class automusBlueBack extends LinearOpMode {
                 .build();
 
         waitForStart();
+        sleep(timeout);
         switch (position) {
             case "Right":
                 drive.followTrajectory(traj1a);
