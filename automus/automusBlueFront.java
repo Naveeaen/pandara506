@@ -29,7 +29,9 @@ public class automusBlueFront extends LinearOpMode {
     OpenCvCamera webCam;
     public PipelineBlueFront detector;
     public String position = "Insert Here";
-    public int timeout = 0;
+    int timeout = 0;
+    String cycle = "";
+    String park = "";
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 

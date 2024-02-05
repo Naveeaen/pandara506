@@ -27,7 +27,9 @@ public class automusRedFront extends LinearOpMode {
     OpenCvCamera webCam;
     public PipelineRedFront detector;
     public String position = "Insert Here";
-    public int timeout = 0;
+    int timeout = 0;
+    String cycle = "";
+    String park = "";
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
@@ -81,9 +83,24 @@ public class automusRedFront extends LinearOpMode {
                 .build();
         TrajectorySequence traj2a2 = drive.trajectorySequenceBuilder(traj2a.end())
                 .back(5)
-                .strafeLeft(20)
-                .forward(5)
                 .build();
+        if(cycle.equals("yes")) {
+            traj2a2 = drive.trajectorySequenceBuilder(traj2a.end())
+                    .back(5)
+                    .build();
+        } else if(park.equals("left")){
+            traj2a2 = drive.trajectorySequenceBuilder(traj2a.end())
+                    .back(5)
+                    .strafeLeft(20)
+                    .forward(5)
+                    .build();
+        } else if(park.equals("right")){
+            traj2a2 = drive.trajectorySequenceBuilder(traj2a.end())
+                    .back(5)
+                    .strafeRight(20)
+                    .forward(5)
+                    .build();
+        }
         TrajectorySequence traj3a = drive.trajectorySequenceBuilder(traj2a2.end()) //stack 1
                 .lineToLinearHeading(new Pose2d(48.3,-5, Math.toRadians(90)))
                 .build();
@@ -155,10 +172,25 @@ public class automusRedFront extends LinearOpMode {
                 .forward(3.6)
                 .build();
         TrajectorySequence traj2b2 = drive.trajectorySequenceBuilder(traj2b.end())
-                .back(6)
-                .strafeLeft(25)
-                .forward(6)
+                .back(5)
                 .build();
+        if(cycle.equals("yes")) {
+            traj2b2 = drive.trajectorySequenceBuilder(traj2b.end())
+                    .back(5)
+                    .build();
+        } else if(park.equals("left")){
+            traj2b2 = drive.trajectorySequenceBuilder(traj2b.end())
+                    .back(5)
+                    .strafeLeft(25)
+                    .forward(5)
+                    .build();
+        } else if(park.equals("right")){
+            traj2b2 = drive.trajectorySequenceBuilder(traj2b.end())
+                    .back(5)
+                    .strafeRight(25)
+                    .forward(5)
+                    .build();
+        }
         TrajectorySequence traj3b = drive.trajectorySequenceBuilder(traj2b2.end()) //stack 1
                 .lineToLinearHeading(new Pose2d(48.3,-5, Math.toRadians(90)))
                 .build();
@@ -225,9 +257,24 @@ public class automusRedFront extends LinearOpMode {
                 .build();
         TrajectorySequence traj2c2 = drive.trajectorySequenceBuilder(traj2c.end())
                 .back(5)
-                .strafeLeft(30)
-                .forward(5)
                 .build();
+        if(cycle.equals("yes")) {
+            traj2c2 = drive.trajectorySequenceBuilder(traj2c.end())
+                    .back(5)
+                    .build();
+        } else if(park.equals("left")){
+            traj2c2 = drive.trajectorySequenceBuilder(traj2c.end())
+                    .back(5)
+                    .strafeLeft(30)
+                    .forward(5)
+                    .build();
+        } else if(park.equals("right")){
+            traj2c2 = drive.trajectorySequenceBuilder(traj2c.end())
+                    .back(5)
+                    .strafeRight(30)
+                    .forward(5)
+                    .build();
+        }
         TrajectorySequence traj3c = drive.trajectorySequenceBuilder(traj2c2.end()) //stack 1
                 .lineToLinearHeading(new Pose2d(48.3,-5, Math.toRadians(90)))
                 .build();
@@ -301,65 +348,67 @@ public class automusRedFront extends LinearOpMode {
                 drive.wrist.setPosition(0.169);
                 drive.followTrajectorySequence(traj2a2);
                 drive.clawRight.setPosition(rightClosePos);
-                /*drive.followTrajectorySequence(traj3a); // drive to stack 1
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.followTrajectorySequence(traj3a2); // drive to stack 1.2
-                drive.slide.setTargetPosition(232);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj3a22);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                sleep(200);
-                drive.slide.setTargetPosition(242);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.wrist.setPosition(0.34);
-                drive.followTrajectory(traj3a3);
-                drive.slide.setTargetPosition(0);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj4a);
-                drive.slide.setTargetPosition(2000);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj5a); // drive to backboard 2
-                sleep(100);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                sleep(200);
-                drive.followTrajectorySequence(traj7a);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                drive.slide.setTargetPosition(0);
-                drive.wrist.setPosition(0.169);
+                if(cycle.equals("yes")) {
+                    drive.followTrajectorySequence(traj3a); // drive to stack 1
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    drive.followTrajectorySequence(traj3a2); // drive to stack 1.2
+                    drive.slide.setTargetPosition(232);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj3a22);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    sleep(200);
+                    drive.slide.setTargetPosition(242);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.wrist.setPosition(0.34);
+                    drive.followTrajectory(traj3a3);
+                    drive.slide.setTargetPosition(0);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj4a);
+                    drive.slide.setTargetPosition(2000);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj5a); // drive to backboard 2
+                    sleep(100);
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    sleep(200);
+                    drive.followTrajectorySequence(traj7a);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    drive.slide.setTargetPosition(0);
+                    drive.wrist.setPosition(0.169);
 
-                drive.followTrajectorySequence(traj3aa);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.followTrajectorySequence(traj3aa2);
-                drive.slide.setTargetPosition(90);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj3aa22);
-                drive.clawLeft.setPosition(leftClosePos); // drive to stack 2
-                drive.clawRight.setPosition(rightClosePos);
-                sleep(120);
-                drive.followTrajectory(traj3aa3);
-                drive.slide.setTargetPosition(0);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.wrist.setPosition(0.34);
-                drive.followTrajectorySequence(traj4aa);
-                drive.slide.setTargetPosition(2000);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj5aa);
-                sleep(100);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.followTrajectorySequence(traj6aa);
-                sleep(100);
-                drive.followTrajectorySequence(traj6aaa);
-                drive.slide.setTargetPosition(0);
-                drive.wrist.setPosition(0.169);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                drive.followTrajectorySequence(traj7aa);*/
+                    drive.followTrajectorySequence(traj3aa);
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    drive.followTrajectorySequence(traj3aa2);
+                    drive.slide.setTargetPosition(90);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj3aa22);
+                    drive.clawLeft.setPosition(leftClosePos); // drive to stack 2
+                    drive.clawRight.setPosition(rightClosePos);
+                    sleep(120);
+                    drive.followTrajectory(traj3aa3);
+                    drive.slide.setTargetPosition(0);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.wrist.setPosition(0.34);
+                    drive.followTrajectorySequence(traj4aa);
+                    drive.slide.setTargetPosition(2000);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj5aa);
+                    sleep(100);
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    drive.followTrajectorySequence(traj6aa);
+                    sleep(100);
+                    drive.followTrajectorySequence(traj6aaa);
+                    drive.slide.setTargetPosition(0);
+                    drive.wrist.setPosition(0.169);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    drive.followTrajectorySequence(traj7aa);
+                }
 
                 break;
             case "Center":
@@ -380,65 +429,67 @@ public class automusRedFront extends LinearOpMode {
                 drive.wrist.setPosition(0.169);
                 drive.followTrajectorySequence(traj2b2);
                 drive.clawRight.setPosition(rightClosePos);
-                /*drive.followTrajectorySequence(traj3a); // drive to stack 1
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.followTrajectorySequence(traj3a2); // drive to stack 1.2
-                drive.slide.setTargetPosition(232);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj3a22);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                sleep(200);
-                drive.slide.setTargetPosition(242);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.wrist.setPosition(0.34);
-                drive.followTrajectory(traj3a3);
-                drive.slide.setTargetPosition(0);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj4a);
-                drive.slide.setTargetPosition(2000);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj5b); // drive to backboard 2
-                sleep(100);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                sleep(200);
-                drive.followTrajectorySequence(traj7b);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                drive.slide.setTargetPosition(0);
-                drive.wrist.setPosition(0.169);
+                if(cycle.equals("yes")) {
+                    drive.followTrajectorySequence(traj3a); // drive to stack 1
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    drive.followTrajectorySequence(traj3a2); // drive to stack 1.2
+                    drive.slide.setTargetPosition(232);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj3a22);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    sleep(200);
+                    drive.slide.setTargetPosition(242);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.wrist.setPosition(0.34);
+                    drive.followTrajectory(traj3a3);
+                    drive.slide.setTargetPosition(0);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj4a);
+                    drive.slide.setTargetPosition(2000);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj5b); // drive to backboard 2
+                    sleep(100);
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    sleep(200);
+                    drive.followTrajectorySequence(traj7b);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    drive.slide.setTargetPosition(0);
+                    drive.wrist.setPosition(0.169);
 
-                drive.followTrajectorySequence(traj3bb);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.followTrajectorySequence(traj3bb2);
-                drive.slide.setTargetPosition(90);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                //drive.followTrajectorySequence(traj3bb22);
-                drive.clawLeft.setPosition(leftClosePos); // drive to stack 2
-                drive.clawRight.setPosition(rightClosePos);
-                sleep(120);
-                //drive.followTrajectory(traj3bb3);
-                drive.slide.setTargetPosition(0);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.wrist.setPosition(0.34);
-                drive.followTrajectorySequence(traj4bb);
-                drive.slide.setTargetPosition(2000);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj5bb);
-                sleep(100);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.followTrajectorySequence(traj6bb);
-                sleep(100);
-                drive.followTrajectorySequence(traj6bbb);
-                drive.slide.setTargetPosition(0);
-                drive.wrist.setPosition(0.169);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                drive.followTrajectorySequence(traj7bb);*/
+                    drive.followTrajectorySequence(traj3bb);
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    drive.followTrajectorySequence(traj3bb2);
+                    drive.slide.setTargetPosition(90);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //drive.followTrajectorySequence(traj3bb22);
+                    drive.clawLeft.setPosition(leftClosePos); // drive to stack 2
+                    drive.clawRight.setPosition(rightClosePos);
+                    sleep(120);
+                    //drive.followTrajectory(traj3bb3);
+                    drive.slide.setTargetPosition(0);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.wrist.setPosition(0.34);
+                    drive.followTrajectorySequence(traj4bb);
+                    drive.slide.setTargetPosition(2000);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj5bb);
+                    sleep(100);
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    drive.followTrajectorySequence(traj6bb);
+                    sleep(100);
+                    drive.followTrajectorySequence(traj6bbb);
+                    drive.slide.setTargetPosition(0);
+                    drive.wrist.setPosition(0.169);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    drive.followTrajectorySequence(traj7bb);
+                }
 
                 break;
             default:
@@ -459,55 +510,57 @@ public class automusRedFront extends LinearOpMode {
                 drive.wrist.setPosition(0.169);
                 drive.followTrajectorySequence(traj2c2);
                 drive.clawRight.setPosition(rightClosePos);
-                /*drive.followTrajectorySequence(traj3c); // drive to stack 1
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.followTrajectorySequence(traj3c2);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                sleep(200);
-                drive.slide.setTargetPosition(242);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.wrist.setPosition(0.34);
-                drive.followTrajectorySequence(traj4c);
-                drive.slide.setTargetPosition(2000);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj5c); // drive to backboard 2
-                sleep(100);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                sleep(200);
-                drive.followTrajectorySequence(traj7c);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                drive.slide.setTargetPosition(90);
-                drive.wrist.setPosition(0.169);
+                if(cycle.equals("yes")) {
+                    drive.followTrajectorySequence(traj3c); // drive to stack 1
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    drive.followTrajectorySequence(traj3c2);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    sleep(200);
+                    drive.slide.setTargetPosition(242);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.wrist.setPosition(0.34);
+                    drive.followTrajectorySequence(traj4c);
+                    drive.slide.setTargetPosition(2000);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj5c); // drive to backboard 2
+                    sleep(100);
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    sleep(200);
+                    drive.followTrajectorySequence(traj7c);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    drive.slide.setTargetPosition(90);
+                    drive.wrist.setPosition(0.169);
 
-                drive.followTrajectorySequence(traj3cc);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.followTrajectorySequence(traj3cc2);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                sleep(120);
-                drive.slide.setTargetPosition(100);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.wrist.setPosition(0.34);
-                drive.followTrajectorySequence(traj4cc);
-                drive.slide.setTargetPosition(2000);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                drive.followTrajectorySequence(traj5cc);
-                sleep(100);
-                drive.clawRight.setPosition(rightOpenPos);
-                drive.clawLeft.setPosition(leftOpenPos);
-                drive.followTrajectorySequence(traj6cc);
-                sleep(100);
-                drive.followTrajectorySequence(traj6ccc);
-                drive.slide.setTargetPosition(0);
-                drive.wrist.setPosition(0.169);
-                drive.clawLeft.setPosition(leftClosePos);
-                drive.clawRight.setPosition(rightClosePos);
-                drive.followTrajectorySequence(traj7cc);*/
+                    drive.followTrajectorySequence(traj3cc);
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    drive.followTrajectorySequence(traj3cc2);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    sleep(120);
+                    drive.slide.setTargetPosition(100);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.wrist.setPosition(0.34);
+                    drive.followTrajectorySequence(traj4cc);
+                    drive.slide.setTargetPosition(2000);
+                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    drive.followTrajectorySequence(traj5cc);
+                    sleep(100);
+                    drive.clawRight.setPosition(rightOpenPos);
+                    drive.clawLeft.setPosition(leftOpenPos);
+                    drive.followTrajectorySequence(traj6cc);
+                    sleep(100);
+                    drive.followTrajectorySequence(traj6ccc);
+                    drive.slide.setTargetPosition(0);
+                    drive.wrist.setPosition(0.169);
+                    drive.clawLeft.setPosition(leftClosePos);
+                    drive.clawRight.setPosition(rightClosePos);
+                    drive.followTrajectorySequence(traj7cc);
+                }
         }
     }
 }

@@ -30,7 +30,10 @@ public class automusBlueBack extends LinearOpMode {
     OpenCvCamera webCam;
     public PipelineBlueBack detector;
     public  String position = "Insert Here";
-    public int timeout = 0;
+    bigAutomus main = new bigAutomus();
+    int timeout = 0;
+    String cycle = "";
+    String park = "";
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 

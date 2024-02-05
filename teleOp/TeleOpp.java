@@ -243,12 +243,13 @@ public class TeleOpp extends LinearOpMode {
 
             //launch pos = 0.38
             //"launcher"
-            if(gamepad2.b && !pressingy){
+            if(gamepad2.b && !pressingx2){
                 drive.launchPadPivot.setPosition(0.41);
                 pressingx2 = true;
             } else if(!gamepad2.b){
                 pressingx2= false;
             }
+            drive.launchPadPivot.setPosition(0.41);
 
 
             //0.642
