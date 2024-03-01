@@ -1,25 +1,27 @@
-package org.firstinspires.ftc.teamcode.pandara506.automus;
+package org.firstinspires.ftc.teamcode.pandara506.mainPrograms;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.pandara506.automus.newAutomusBlueFront;
+import org.firstinspires.ftc.teamcode.pandara506.automus.newAutomusRedBack;
+import org.firstinspires.ftc.teamcode.pandara506.automus.newAutomusRedFront;
+import org.firstinspires.ftc.teamcode.pandara506.mainPrograms.Hardware;
+import org.firstinspires.ftc.teamcode.pandara506.automus.newAutomusBlueBack;
+import org.firstinspires.ftc.teamcode.pandara506.automus.newAutomusBlueFront;
 
-@Autonomous(name = "bigAuto")
+
+@Autonomous(name = "bigAutomus")
+@Disabled
 public class bigAutomus extends LinearOpMode {
-    Hardware drive = new Hardware(hardwareMap);
-    automusBlueFront autoBF = new automusBlueFront();
-    automusBlueBack autoBB = new automusBlueBack();
-    automusRedFront autoRF = new automusRedFront();
-    automusRedFrontGolden autoRFGF = new automusRedFrontGolden();
-    automusRedBackJava autoRB = new automusRedBackJava();
-
-    String color = "";
-    String side = "";
-    int timeout = 0;
-    String cycle = "";
-    String park = "";
+    public String color = "";
+    public String side = "";
+    public int timeout = 0;
+    public String cycle = "";
+    public String park = "";
 
     boolean Cswitch = false;
     boolean Sswitch = false;
@@ -33,9 +35,13 @@ public class bigAutomus extends LinearOpMode {
     boolean Bpressed = false;
     boolean Xpressed = false;
 
-    public void runOpMode() throws InterruptedException {
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-        while(opModeInInit()) {
+    public void runOpMode(){
+        Hardware drive = new Hardware(hardwareMap);
+
+        while(!isStarted() && !isStopRequested()) {
 
             telemetry.addData("Color", color);
             telemetry.addData("Side", side);
@@ -44,13 +50,13 @@ public class bigAutomus extends LinearOpMode {
             telemetry.addData("Park", park);
             telemetry.update();
 
-            //color switch (lol)
+            // side switch
             if (gamepad1.right_bumper && !Rbumped) {
                 if (Sswitch) {
-                    side = "Front";
+                    side = "front";
                     Sswitch = false;
                 } else {
-                    side = "Back";
+                    side = "back";
                     Sswitch = true;
                 }
                 Rbumped = true;
@@ -58,13 +64,13 @@ public class bigAutomus extends LinearOpMode {
                 Rbumped = false;
             }
 
-            // side switch
+            // color switch (lol)
             if (gamepad1.left_bumper && !Lbumped) {
                 if (Cswitch) {
-                    color = "Red";
+                    color = "red";
                     Cswitch = false;
                 } else {
-                    color = "Blue";
+                    color = "blue";
                     Cswitch = true;
                 }
                 Lbumped = true;
@@ -101,13 +107,13 @@ public class bigAutomus extends LinearOpMode {
                 Bpressed = false;
             }
 
-            // side switch
+            // park switch
             if (gamepad1.x && !Xpressed) {
                 if (Pswitch) {
-                    park = "Red";
+                    park = "left";
                     Pswitch = false;
                 } else {
-                    park = "Blue";
+                    park = "right";
                     Pswitch = true;
                 }
                 Xpressed = true;
@@ -115,32 +121,20 @@ public class bigAutomus extends LinearOpMode {
                 Xpressed = false;
             }
 
-            autoBF.timeout = timeout;
-            autoBB.timeout = timeout;
-            autoRF.timeout = timeout;
-            autoRB.timeout = timeout;
-            autoRFGF.timeout = timeout;
-
-            autoBF.cycle = cycle;
-            autoBB.cycle = cycle;
-            autoRF.cycle = cycle;
-            autoRB.cycle = cycle;
-            autoRFGF.cycle = cycle;
-
-            autoBF.park = park;
-            autoBB.park = park;
-            autoRF.park = park;
-            autoRB.park = park;
-            autoRFGF.park = park;
-
-
-            if(color.equals("Red") && side.equals("Front")) autoRF.runOpMode();
-            if(color.equals("Red") && side.equals("Back")) autoRF.runOpMode();
-            if(color.equals("Blue") && side.equals("Front")) autoRF.runOpMode();
-            if(color.equals("Blue") && side.equals("Back")) autoRF.runOpMode();
-            if(side.equals("GoldenF")) autoRFGF.runOpMode();
 
 
         }
+
+        waitForStart();
+
+        newAutomusBlueFront autoBF = new newAutomusBlueFront();
+        newAutomusBlueBack autoBB = new newAutomusBlueBack();
+        newAutomusRedFront autoRF = new newAutomusRedFront();
+        newAutomusRedBack autoRB = new newAutomusRedBack();
+
+        //if(color.equals("red" ) && side.equals("front")) autoRF.runOpMode();
+        //if(color.equals("red" ) && side.equals("back" )) autoRB.runOpMode();
+        //if(color.equals("blue") && side.equals("front")) autoBF.runOpMode();
+        //if(color.equals("blue") && side.equals("back" )) autoBB.runOpMode();
     }
 }

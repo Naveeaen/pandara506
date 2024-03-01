@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode.pandara506.roadrunner.roadrunnerTuningTes
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
+import org.firstinspires.ftc.teamcode.pandara506.mainPrograms.Hardware;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 
 /*
@@ -25,6 +26,7 @@ import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySe
  * is recommended that you use the FollowerPIDTuner opmode for further fine tuning.
  */
 @Config
+@Disabled
 @Autonomous(group = "drive")
 public class BackAndForth extends LinearOpMode {
 

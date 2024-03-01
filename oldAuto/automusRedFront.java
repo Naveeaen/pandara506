@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pandara506.automus;
+package org.firstinspires.ftc.teamcode.pandara506.oldAuto;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -7,28 +7,26 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants;
-import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
-import org.firstinspires.ftc.teamcode.pandara506.camera.PipelineRedFront;
+import org.firstinspires.ftc.teamcode.pandara506.mainPrograms.Hardware;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
+@Disabled
 @Autonomous(group = "autoRed")
 public class automusRedFront extends LinearOpMode {
 
     OpenCvCamera webCam;
-    public PipelineRedFront detector;
-    public String position = "Insert Here";
+    //public PipelineRedFront detector;
+    public String position = "Left";
     int timeout = 0;
-    String cycle = "";
+    String cycle = "yes";
     String park = "";
     FtcDashboard dashboard = FtcDashboard.getInstance();
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
@@ -45,7 +43,7 @@ public class automusRedFront extends LinearOpMode {
 
         //vision cam
         //cameraqa
-        int cameraMotionViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        /*int cameraMotionViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         detector = new PipelineRedFront();
         webCam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "wc1"), cameraMotionViewId);
         webCam.openCameraDevice();
@@ -67,11 +65,11 @@ public class automusRedFront extends LinearOpMode {
             dashboardTelemetry.update();
 
             dashboardTelemetry.addData("position", position);
-        }
+        }*/
 
         //left
         TrajectorySequence traj1a = drive.trajectorySequenceBuilder(new Pose2d())
-                .lineToLinearHeading(new Pose2d(32.5, 5.4, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(40, 5.4, Math.toRadians(90)))
                 .build();
         Trajectory traj1aa = drive.trajectoryBuilder(traj1a.end())
                 .back(2)
@@ -332,20 +330,20 @@ public class automusRedFront extends LinearOpMode {
             case "Left":
                 drive.followTrajectorySequence(traj1a);
                 drive.clawLeft.setPosition(leftOpenPos);
-                drive.slide.setPower(0.9);
+                /*drive.slide.setPower(0.9);
                 drive.slide.setTargetPosition(1300);
-                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);*/
                 sleep(100);
                 drive.followTrajectory(traj1aa);
                 drive.clawLeft.setPosition(leftClosePos);
-                drive.wrist.setPosition(0.34);
+                //drive.wrist.setPosition(0.34);
                 drive.followTrajectorySequence(traj2a); // drive to backboard 1
                 drive.clawRight.setPosition(rightOpenPos);
                 sleep(200);
-                drive.slide.setTargetPosition(0);
+                /*drive.slide.setTargetPosition(0);
                 drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 sleep(200);
-                drive.wrist.setPosition(0.169);
+                drive.wrist.setPosition(0.169);*/
                 drive.followTrajectorySequence(traj2a2);
                 drive.clawRight.setPosition(rightClosePos);
                 if(cycle.equals("yes")) {
@@ -353,21 +351,21 @@ public class automusRedFront extends LinearOpMode {
                     drive.clawRight.setPosition(rightOpenPos);
                     drive.clawLeft.setPosition(leftOpenPos);
                     drive.followTrajectorySequence(traj3a2); // drive to stack 1.2
-                    drive.slide.setTargetPosition(232);
-                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //drive.slide.setTargetPosition(232);
+                    //drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     drive.followTrajectorySequence(traj3a22);
                     drive.clawLeft.setPosition(leftClosePos);
                     drive.clawRight.setPosition(rightClosePos);
                     sleep(200);
-                    drive.slide.setTargetPosition(242);
-                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    drive.wrist.setPosition(0.34);
+                    //drive.slide.setTargetPosition(242);
+                    //drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //drive.wrist.setPosition(0.34);
                     drive.followTrajectory(traj3a3);
                     drive.slide.setTargetPosition(0);
                     drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     drive.followTrajectorySequence(traj4a);
-                    drive.slide.setTargetPosition(2000);
-                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //drive.slide.setTargetPosition(2000);
+                    //drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     drive.followTrajectorySequence(traj5a); // drive to backboard 2
                     sleep(100);
                     drive.clawRight.setPosition(rightOpenPos);
@@ -376,26 +374,26 @@ public class automusRedFront extends LinearOpMode {
                     drive.followTrajectorySequence(traj7a);
                     drive.clawLeft.setPosition(leftClosePos);
                     drive.clawRight.setPosition(rightClosePos);
-                    drive.slide.setTargetPosition(0);
-                    drive.wrist.setPosition(0.169);
+                    //drive.slide.setTargetPosition(0);
+                    //drive.wrist.setPosition(0.169);
 
                     drive.followTrajectorySequence(traj3aa);
                     drive.clawRight.setPosition(rightOpenPos);
                     drive.clawLeft.setPosition(leftOpenPos);
                     drive.followTrajectorySequence(traj3aa2);
-                    drive.slide.setTargetPosition(90);
-                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //drive.slide.setTargetPosition(90);
+                    //drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     drive.followTrajectorySequence(traj3aa22);
                     drive.clawLeft.setPosition(leftClosePos); // drive to stack 2
                     drive.clawRight.setPosition(rightClosePos);
                     sleep(120);
                     drive.followTrajectory(traj3aa3);
-                    drive.slide.setTargetPosition(0);
-                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    drive.wrist.setPosition(0.34);
+                    //drive.slide.setTargetPosition(0);
+                    //drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //drive.wrist.setPosition(0.34);
                     drive.followTrajectorySequence(traj4aa);
-                    drive.slide.setTargetPosition(2000);
-                    drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //drive.slide.setTargetPosition(2000);
+                    //drive.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     drive.followTrajectorySequence(traj5aa);
                     sleep(100);
                     drive.clawRight.setPosition(rightOpenPos);
@@ -403,8 +401,8 @@ public class automusRedFront extends LinearOpMode {
                     drive.followTrajectorySequence(traj6aa);
                     sleep(100);
                     drive.followTrajectorySequence(traj6aaa);
-                    drive.slide.setTargetPosition(0);
-                    drive.wrist.setPosition(0.169);
+                    //drive.slide.setTargetPosition(0);
+                    //drive.wrist.setPosition(0.169);
                     drive.clawLeft.setPosition(leftClosePos);
                     drive.clawRight.setPosition(rightClosePos);
                     drive.followTrajectorySequence(traj7aa);

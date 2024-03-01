@@ -9,19 +9,18 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class PipelineRedFront extends OpenCvPipeline {
 
     private Mat workingMatrix = new Mat();
-    public String position = "Right";
+    public String position = "right";
 
-    public static int matCrowStart = 150;
-    public static int matCrowEnd = 200;
-    public static int matCcolStart = 250;
+    public static int matCrowStart = 300; // width right
+    public static int matCrowEnd = 340; // width left
+    public static int matCcolStart = 135; // height bottom
+    public static int matCcolEnd = 160; // height top
 
-    public static int matCcolEnd = 275;
 
-
-    public static int matRrowStart = 370;
-    public static int matRrowEnd = 425; //610
-    public static int matRcolStart = 250;
-    public static int matRcolEnd = 275;
+    public static int matRrowStart = 65; // width
+    public static int matRrowEnd = 105;
+    public static int matRcolStart = 135; // height
+    public static int matRcolEnd = 160;
 
 
     public double leftRed = 0;
@@ -57,11 +56,11 @@ public class PipelineRedFront extends OpenCvPipeline {
         centerRed /= matC.rows() * matC.cols();
 
         if (centerRed > 0 && centerRed > rightRed) {
-            position = "Center";
+            position = "center";
         }   else if (rightRed > 0 && rightRed > centerRed) {
-            position = "Right";
+            position = "right";
         }   else {
-            position = "Left";
+            position = "left";
         }
         return workingMatrix;
     }

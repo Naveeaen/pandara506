@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pandara506.roadrunner;
+package org.firstinspires.ftc.teamcode.pandara506.mainPrograms;
 
 import androidx.annotation.NonNull;
 
@@ -21,6 +21,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -31,6 +32,7 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 
 //import org.firstinspires.ftc.teamcode.pandara506.MecanumSubsystem;
 //import org.firstinspires.ftc.teamcode.pandara506.MecanumSubsystem;
+import org.firstinspires.ftc.teamcode.pandara506.roadrunner.StandardTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequenceRunner;
@@ -47,8 +49,8 @@ import java.util.List;
 public class Hardware extends MecanumDrive {
     /*public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0.5, 0.005);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(8.5,0.005, 0.005);*/
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(9, 0.4, 0.8);
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(9, 9, 0.5);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(14, 0.1, 0.01);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(5.5, 0.04, 0.009);
 
     public static double LATERAL_MULTIPLIER = 1.7604875;
 
@@ -76,6 +78,11 @@ public class Hardware extends MecanumDrive {
     public Servo clawRight;
     public double clawRightOpenPos = 0.24;
     public double clawRightClosePos = 0.45;
+    public double wristDownPos = 0.27;
+    public double wristUpPos = 0.49;
+    public int slideP1Pos = 360;
+    public int slideP3Pos = 170;
+
     public Servo wrist;
     public Servo launchPadPivot;
     public Servo initiateLaunch;
@@ -102,10 +109,10 @@ public class Hardware extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-        leftFront = hardwareMap.get(DcMotorEx.class, "em0");
-        leftRear = hardwareMap.get(DcMotorEx.class, "em1");
-        rightRear = hardwareMap.get(DcMotorEx.class, "cm3");
-        rightFront = hardwareMap.get(DcMotorEx.class, "cm0");
+        leftFront = hardwareMap.get(DcMotorEx.class, "cm2");
+        leftRear = hardwareMap.get(DcMotorEx.class, "cm0");
+        rightRear = hardwareMap.get(DcMotorEx.class, "em0");
+        rightFront = hardwareMap.get(DcMotorEx.class, "em3");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -132,8 +139,8 @@ public class Hardware extends MecanumDrive {
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftRear.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
 
         // TODO: if desired, use setLocalizer() to change the localization method
         setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels));
@@ -146,7 +153,7 @@ public class Hardware extends MecanumDrive {
 
         //other hardware things
         try{
-            slide = hardwareMap.get(DcMotorEx.class, "em2");
+            slide = hardwareMap.get(DcMotorEx.class, "cm1");
             slide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             slide.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
             slide.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -155,7 +162,7 @@ public class Hardware extends MecanumDrive {
             slide = null;
         }
         try{
-            hanger = hardwareMap.get(DcMotorEx.class, "cm1");
+            hanger = hardwareMap.get(DcMotorEx.class, "em1");
             hanger.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
             hanger.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
             hanger.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -165,35 +172,35 @@ public class Hardware extends MecanumDrive {
         }
 
         try{
-            clawLeft = hardwareMap.get(Servo.class, "cs1");
+            clawLeft = hardwareMap.get(Servo.class, "es0");
         } catch (Exception p_exception) {
             clawLeft = null;
         }
 
         try{
-            clawRight = hardwareMap.get(Servo.class, "cs2");
+            clawRight = hardwareMap.get(Servo.class, "es2");
         } catch (Exception p_exception) {
             clawRight = null;
         }
 
         try{
-            wrist = hardwareMap.get(Servo.class, "cs0");
+            wrist = hardwareMap.get(Servo.class, "es1");
         } catch (Exception p_exception) {
             wrist = null;
         }
         try{
-            launchPadPivot = hardwareMap.get(Servo.class, "es0");
+            launchPadPivot = hardwareMap.get(Servo.class, "cs0");
         } catch (Exception p_exception) {
             launchPadPivot = null;
         }
         try{
-            initiateLaunch = hardwareMap.get(Servo.class, "es1");
+            initiateLaunch = hardwareMap.get(Servo.class, "cs1");
         } catch (Exception p_exception) {
             initiateLaunch = null;
         }
 
         try{
-            touchSensor = hardwareMap.get(DigitalChannel.class, "ed0");
+            touchSensor = hardwareMap.get(DigitalChannel.class, "cd0");
             touchSensor.setMode(DigitalChannel.Mode.INPUT);
         } catch (Exception p_exception){
             touchSensor = null;
@@ -366,7 +373,7 @@ public class Hardware extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-        return 0;
+        return 0.0;
     }
 
     @Override
@@ -383,5 +390,20 @@ public class Hardware extends MecanumDrive {
 
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
+    }
+
+    public void closeR() {clawRight.setPosition(clawRightClosePos);}
+    public void  openR() {clawRight.setPosition(clawRightOpenPos );}
+    public void closeL() {clawLeft .setPosition(clawLeftClosePos );}
+    public void  openL() {clawLeft .setPosition(clawLeftOpenPos  );}
+    public void wristU() {wrist    .setPosition(wristUpPos       );}
+    public void wristD() {wrist    .setPosition(wristDownPos     );}
+    public void slidesTo(int slidePos, double power){
+        slide.setTargetPosition(slidePos);
+        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slide.setPower(power);
+    }
+    public void slidesTo(int slidePos){
+        slidesTo(slidePos, 1.0);
     }
 }

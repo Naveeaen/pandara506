@@ -27,21 +27,23 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.pandara506.automus;
+package org.firstinspires.ftc.teamcode.pandara506.oldAuto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
+import org.firstinspires.ftc.teamcode.pandara506.mainPrograms.Hardware;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -86,6 +88,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 @Config
+@Disabled
 @Autonomous(name="betterAuto", group = "betterAuto")
 public class betterAuto extends LinearOpMode
 {
@@ -104,7 +107,7 @@ public class betterAuto extends LinearOpMode
     final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
 
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = 6;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private static final int DESIRED_TAG_ID = 3;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -156,48 +159,77 @@ public class betterAuto extends LinearOpMode
             }
             if (targetFound) {
                 ATHOffset += desiredTag.ftcPose.yaw;
-                ATXOffset += desiredTag.ftcPose.x;
-                ATYOffset += desiredTag.ftcPose.y;
                 i++;
             }
             telemetry.update();
         }
         ATHOffset /= numPics;
-        telemetry.addData("avgHeading", Math.toRadians(ATHOffset));
-        ATXOffset /= numPics;
+        telemetry.addData("avgHeading", ATHOffset);
+        /*ATXOffset /= numPics;
         telemetry.addData("avgX", ATXOffset);
         ATYOffset /= numPics;
         telemetry.addData("avgY", ATYOffset);
 
-        ATLineSlope = Math.tan(ATHOffset);
+        ATLineSlope = Math.tan(Math.toRadians(ATHOffset));
         telemetry.addData("April Tag Slope", ATLineSlope);
         ySlope = -(1/ATLineSlope);
         xSlope = ATLineSlope;
-        yYint = 0 - ySlope * 0;
-        //-ATY = xSlope*-ATX + b
-        //b = -ATY-xSlpoe*-ATX
-        xYint = -ATYOffset - xSlope * -ATXOffset;
-        telemetry.addData("x y-int", xYint);
-        intersectX = (xYint - yYint)/(ySlope-xSlope);
+        xYint = 0;
+        //ATY = ySlope*ATX + yYint
+        //yYint = ATY - xSlope*ATX
+        yYint = ATYOffset - (ySlope * ATXOffset);
+        telemetry.addData("x y-int", yYint);
+        intersectX = (yYint - xYint)/(xSlope-ySlope);
         telemetry.addData("Intersect x cord", intersectX);
         intersectY = ySlope * intersectX + yYint;
         telemetry.addData("Intersect y cord", intersectY);
-        yLength = Math.sqrt(Math.pow(0 + intersectX, 2) + Math.pow(0 + intersectY, 2));
-        xLength = Math.sqrt(Math.pow(-ATXOffset + intersectX, 2) + Math.pow(-ATYOffset + intersectY, 2));
+        yLength = Math.sqrt(Math.pow(intersectX, 2) + Math.pow(0 + intersectY, 2));
+        xLength = Math.sqrt(Math.pow(ATXOffset + intersectX, 2) + Math.pow(ATYOffset + intersectY, 2));
+        */
+        //Pose2d startPose = new Pose2d(0, 0, Math.toRadians(-ATHOffset));
+        //drive.setPoseEstimate(startPose);
 
-        Pose2d startPose = new Pose2d(xLength, yLength, Math.toRadians(-ATHOffset));
-        drive.setPoseEstimate(startPose);
-
-        telemetry.addData("Drive Position:", startPose);
+        telemetry.addData("Heading Offset:", Math.toRadians(ATHOffset));
         telemetry.update();
 
-//        Trajectory trajTest1 = drive.trajectoryBuilder(startPose)
-//                .splineToConstantHeading(new Vector2d(0, 12), Math.toRadians(0))
-//                .build();
-
         drive.wrist.setPosition(0.34);
-        sleep(20000);
-//        drive.followTrajectory(trajTest1);
+        //sleep(10000);
+        //drive.turn(Math.toRadians(ATHOffset));
+
+        /*double numPics2 = 10.0;
+        int i2 = 0;
+        while (opModeIsActive() && i2 < numPics2) {
+            targetFound = false;
+            desiredTag = null;
+
+            List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+            for (AprilTagDetection detection : currentDetections) {
+                if (detection.metadata != null) {
+                    if ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID)) {
+                        targetFound = true;
+                        desiredTag = detection;
+                        break;
+                    } else telemetry.addLine("I see the wrong one");
+                }
+            }
+            if (targetFound) {
+                ATXOffset += desiredTag.ftcPose.x;
+                ATYOffset += desiredTag.ftcPose.y;
+                i2++;
+            }
+            telemetry.update();
+        }*/
+        ATXOffset /= numPics;
+        telemetry.addData("avgX", ATXOffset);
+        ATYOffset /= numPics;
+        telemetry.addData("avgY", ATYOffset);
+        telemetry.update();
+        //sleep(30000);
+
+        TrajectorySequence apriltag = drive.trajectorySequenceBuilder(new Pose2d(0, 0))
+                .lineToLinearHeading(new Pose2d (ATYOffset, ATXOffset, Math.toRadians(ATHOffset)))
+                .build();
+        drive.followTrajectorySequence(apriltag);
     }
 
     private void initAprilTag() {

@@ -9,28 +9,23 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class PipelineRedBack extends OpenCvPipeline {
 
     private Mat workingMatrix = new Mat();
-    public String position = "Right";
-    public static int matLrowStart = 60;
-    public static int matLrowEnd = 110;
-    public static int matLcolStart = 250;
-    public static int matLcolEnd = 275;
+    public String position = "right";
+
+    public static int matCrowStart = 120; // width right
+    public static int matCrowEnd = 160; // width left
+    public static int matCcolStart = 140; // height bottom
+    public static int matCcolEnd = 165; // height top
 
 
-    public static int matCrowStart = 305;
-    public static int matCrowEnd = 355;
-    public static int matCcolStart = 250;
-    public static int matCcolEnd = 275;
+    public static int matLrowStart = 320; // width
+    public static int matLrowEnd = 360;
+    public static int matLcolStart = 130;
+
+    public static int matLcolEnd = 155;
 
 
-    public static int matRrowStart = 540;
-    public static int matRrowEnd = 600; //610
-    public static int matRcolStart = 250;
-
-    public static int matRcolEnd = 275;
-
-
-    public double leftRed = 0;
     public double rightRed = 0;
+    public double leftRed = 0;
     public double centerRed = 0;
 
     public PipelineRedBack() {
@@ -45,29 +40,29 @@ public class PipelineRedBack extends OpenCvPipeline {
             return input;
         }
 
-        Mat matR = workingMatrix.submat(matRcolStart, matRcolEnd, matRrowStart, matRrowEnd);
-        Imgproc.rectangle(workingMatrix, new Rect(matRrowStart, matRcolStart, (matRrowEnd - matRrowStart), (matRcolEnd - matRcolStart)), new Scalar(0, 0, 0));
+        Mat matL = workingMatrix.submat(matLcolStart, matLcolEnd, matLrowStart, matLrowEnd);
+        Imgproc.rectangle(workingMatrix, new Rect(matLrowStart, matLcolStart, (matLrowEnd - matLrowStart), (matLcolEnd - matLcolStart)), new Scalar(0, 0, 0));
 
 
         Mat matC = workingMatrix.submat(matCcolStart, matCcolEnd, matCrowStart, matCrowEnd);
         Imgproc.rectangle(workingMatrix, new Rect(matCrowStart, matCcolStart, (matCrowEnd - matCrowStart), (matCcolEnd - matCcolStart)), new Scalar(0, 0, 255));
 
-        rightRed = Core.sumElems(matR).val[0];
-        rightRed -= Core.sumElems(matR).val[1];
-        rightRed -= Core.sumElems(matR).val[2];
-        rightRed /= matR.rows() * matR.cols();
+        leftRed = Core.sumElems(matL).val[0];
+        leftRed -= Core.sumElems(matL).val[1];
+        leftRed -= Core.sumElems(matL).val[2];
+        leftRed /= matL.rows() * matL.cols();
 
         centerRed = Core.sumElems(matC).val[0];
         centerRed -= Core.sumElems(matC).val[1];
         centerRed -= Core.sumElems(matC).val[2];
         centerRed /= matC.rows() * matC.cols();
 
-        if (centerRed > 0 && centerRed > rightRed) {
-            position = "Center";
-        }   else if (rightRed > 0 && rightRed > centerRed) {
-            position = "Right";
+        if (centerRed > 0 && centerRed > leftRed) {
+            position = "center";
+        }   else if (leftRed > 0 && leftRed > centerRed) {
+            position = "left";
         }   else {
-            position = "Left";
+            position = "right";
         }
         return workingMatrix;
     }

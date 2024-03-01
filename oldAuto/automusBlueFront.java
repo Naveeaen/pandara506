@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pandara506.automus;
+package org.firstinspires.ftc.teamcode.pandara506.oldAuto;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -6,13 +6,14 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants;
-import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
+import org.firstinspires.ftc.teamcode.pandara506.mainPrograms.Hardware;
 import org.firstinspires.ftc.teamcode.pandara506.camera.PipelineBlueFront;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -23,6 +24,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
  * This is a simple routine to test turning capabilities.
  */
 @Config
+@Disabled
 @Autonomous(group = "autoBlue")
 public class automusBlueFront extends LinearOpMode {
 

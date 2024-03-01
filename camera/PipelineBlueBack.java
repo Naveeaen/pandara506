@@ -9,22 +9,21 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class PipelineBlueBack extends OpenCvPipeline {
 
     private Mat workingMatrix = new Mat();
-    public String position = "Right";
+    public String position = "right";
 
-    public static int matCrowStart = 150;
-    public static int matCrowEnd = 200;
-    public static int matCcolStart = 250;
-    public static int matCcolEnd = 275;
+    public static int matCrowStart = 270; // width from left
+    public static int matCrowEnd = 310; // width to right
+    public static int matCcolStart = 325; // height from top
+    public static int matCcolEnd = 350; // height to bottom
 
 
-    public static int matRrowStart = 370;
-    public static int matRrowEnd = 425; //610
-    public static int matRcolStart = 250;
-    public static int matRcolEnd = 275;
+    public static int matLrowStart = 18; // width
+    public static int matLrowEnd = 58;
+    public static int matLcolStart = 325; // height
+    public static int matLcolEnd = 350;
 
 
     public double leftBlue = 0;
-    public double rightBlue = 0;
     public double centerBlue = 0;
 
     public PipelineBlueBack() {
@@ -39,28 +38,28 @@ public class PipelineBlueBack extends OpenCvPipeline {
             return input;
         }
 
-        Mat matR = workingMatrix.submat(matRcolStart, matRcolEnd, matRrowStart, matRrowEnd);
-        Imgproc.rectangle(workingMatrix, new Rect(matRrowStart, matRcolStart, (matRrowEnd - matRrowStart), (matRcolEnd - matRcolStart)), new Scalar(0, 0, 0));
+        Mat matR = workingMatrix.submat(matLcolStart, matLcolEnd, matLrowStart, matLrowEnd);
+        Imgproc.rectangle(workingMatrix, new Rect(matLrowStart, matLcolStart, (matLrowEnd - matLrowStart), (matLcolEnd - matLcolStart)), new Scalar(0, 0, 0));
 
         Mat matC = workingMatrix.submat(matCcolStart, matCcolEnd, matCrowStart, matCrowEnd);
         Imgproc.rectangle(workingMatrix, new Rect(matCrowStart, matCcolStart, (matCrowEnd - matCrowStart), (matCcolEnd - matCcolStart)), new Scalar(0, 0, 255));
 
-        rightBlue = Core.sumElems(matR).val[2];
-        rightBlue -= Core.sumElems(matR).val[0];
-        rightBlue -= Core.sumElems(matR).val[1];
-        rightBlue /= matR.rows() * matR.cols();
+        leftBlue = Core.sumElems(matR).val[2];
+        leftBlue -= Core.sumElems(matR).val[0];
+        leftBlue -= Core.sumElems(matR).val[1];
+        leftBlue /= matR.rows() * matR.cols();
 
         centerBlue = Core.sumElems(matC).val[2];
         centerBlue -= Core.sumElems(matC).val[0];
         centerBlue -= Core.sumElems(matC).val[1];
         centerBlue /= matC.rows() * matC.cols();
 
-        if (centerBlue > 0 && centerBlue > rightBlue) {
-            position = "Center";
-        } else if (rightBlue > 0 && rightBlue > centerBlue) {
-            position = "Right";
+        if (centerBlue > 0 && centerBlue > leftBlue) {
+            position = "center";
+        } else if (leftBlue > 0 && leftBlue > centerBlue) {
+            position = "left";
         } else {
-            position = "Left";
+            position = "right";
         }
         return workingMatrix;
     }

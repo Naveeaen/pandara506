@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.MovingStatistics;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
 import org.firstinspires.ftc.teamcode.pandara506.roadrunner.DriveConstants;
-import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
+import org.firstinspires.ftc.teamcode.pandara506.mainPrograms.Hardware;
 
 /*
  * This routine determines the effective track width. The procedure works by executing a point turn

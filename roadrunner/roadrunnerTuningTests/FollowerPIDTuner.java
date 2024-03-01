@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode.pandara506.roadrunner.roadrunnerTuningTes
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.pandara506.roadrunner.Hardware;
+import org.firstinspires.ftc.teamcode.pandara506.mainPrograms.Hardware;
 import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySequence;
 
 /*
@@ -22,6 +23,7 @@ import org.firstinspires.ftc.teamcode.pandara506.trajectorysequence.TrajectorySe
  * These coefficients can be tuned live in dashboard.
  */
 @Config
+@Disabled
 @Autonomous(group = "drive")
 public class FollowerPIDTuner extends LinearOpMode {
     public static double DISTANCE = 36; // in
