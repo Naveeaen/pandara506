@@ -32,8 +32,8 @@ public class ServoTester extends LinearOpMode {
             telemetry.addData("actualposition", actualPosition);
             telemetry.addData("position2", position2);
             telemetry.addData("actualposition2", actualPosition2);
-            telemetry.addData("position2", position3);
-            telemetry.addData("actualposition2", actualPosition3);
+            telemetry.addData("position3", position3);
+            telemetry.addData("actualposition3", actualPosition3);
             telemetry.update();
 
             //left open pos = 0.22
@@ -48,8 +48,8 @@ public class ServoTester extends LinearOpMode {
             //trigger pull = 1
 
             //drive.launchPadPivot.setPosition(position);
-            actualPosition = drive.wrist.getPosition(); //es0
-            drive.wrist.setPosition(position);
+            actualPosition = drive.launchPadPivot.getPosition(); //
+            drive.launchPadPivot.setPosition(position);
             if(gamepad1.a && !pressinga) {
                 position += .01;
                 pressinga = true;
@@ -64,8 +64,8 @@ public class ServoTester extends LinearOpMode {
             }
 
 
-            drive.clawRight.setPosition(position2); // es2
-            actualPosition2 = drive.clawRight.getPosition();
+            drive.initiateLaunch.setPosition(position2); // es2
+            actualPosition2 = drive.initiateLaunch.getPosition();
             if(gamepad1.left_bumper && !pressingbumpl) {
                 position2 += .01;
                 pressingbumpl = true;
@@ -79,7 +79,7 @@ public class ServoTester extends LinearOpMode {
                 pressingbumpr = false;
             }
 
-            drive.clawLeft.setPosition(position3); // es1
+            /*drive.clawLeft.setPosition(position3); // es1
             actualPosition3 = drive.clawLeft.getPosition();
             if(gamepad1.dpad_left && !pressingdleft) {
                 position3 += .01;
@@ -92,7 +92,7 @@ public class ServoTester extends LinearOpMode {
                 pressingdright = true;
             } else if (!gamepad1.dpad_left) {
                 pressingdright = false;
-            }
+            }*/
 
 
         }

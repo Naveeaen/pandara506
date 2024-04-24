@@ -59,9 +59,9 @@ public class PipelineBlueFront extends OpenCvPipeline {
         if (centerBlue > 0 && centerBlue > rightBlue) {
             position = "center";
         } else if (rightBlue > 0 && rightBlue > centerBlue) {
-            position = "right";
-        } else {
             position = "left";
+        } else {
+            position = "right";
         }
         return workingMatrix;
     }

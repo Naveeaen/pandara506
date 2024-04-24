@@ -125,7 +125,7 @@ public class newAutomusRedFront extends LinearOpMode {
         else{
             stackL1 = drive.trajectorySequenceBuilder(boardL1.end())
                     .back(5)
-                    .strafeRight(20)
+                    .strafeRight(-30)
                     .turn(Math.toRadians(180))
                     .back(5)
                     .build();
@@ -198,7 +198,7 @@ public class newAutomusRedFront extends LinearOpMode {
         else{
             stackC1 = drive.trajectorySequenceBuilder(boardC1.end())
                     .back(5)
-                    .strafeRight(30)
+                    .strafeRight(-29)
                     .turn(Math.toRadians(180))
                     .back(5)
                     .build();
@@ -271,7 +271,7 @@ public class newAutomusRedFront extends LinearOpMode {
         else{
             stackR1 = drive.trajectorySequenceBuilder(boardR1.end())
                     .back(5)
-                    .strafeRight(35)
+                    .strafeRight(-20)
                     .turn(Math.toRadians(180))
                     .back(5)
                     .build();

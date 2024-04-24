@@ -98,14 +98,14 @@ public class newAutomusRedBack extends LinearOpMode {
                 .back(5)
                 .lineToLinearHeading(new Pose2d(6, -72, Math.toRadians(86)))
                 .lineTo(new Vector2d(8, -10))
-                .lineTo(new Vector2d(34.9, 12))
+                .lineTo(new Vector2d(34, 12))
                 .build();
         TrajectorySequence stackL2b = drive.trajectorySequenceBuilder(stackL2.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .forward(7.5)
                 .build();
         Trajectory stackL2c = drive.trajectoryBuilder(stackL2b.end())
-                .back(5)
+                .back(7)
                 .build();
         TrajectorySequence boardL2a = drive.trajectorySequenceBuilder(stackL2c.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, 0.6*DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
@@ -160,7 +160,7 @@ public class newAutomusRedBack extends LinearOpMode {
                 .forward(8)
                 .build();
         TrajectorySequence stackC2c = drive.trajectorySequenceBuilder(stackC2b.end())
-                .back(5)
+                .back(7)
                 .build();
         TrajectorySequence boardC2a = drive.trajectorySequenceBuilder(stackC2c.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.6 * DriveConstants.MAX_VEL, 0.6*DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
@@ -169,13 +169,13 @@ public class newAutomusRedBack extends LinearOpMode {
                 .build();
         TrajectorySequence boardC2b = drive.trajectorySequenceBuilder(boardC2a.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.6 * DriveConstants.MAX_VEL, 0.6*DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .lineTo(new Vector2d(31.5, -90))
+                .lineTo(new Vector2d(34, -90))
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .forward(5)
                 .build();
         TrajectorySequence fstC = drive.trajectorySequenceBuilder(boardC2b.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .lineTo(new Vector2d(25.5, -93))
+                .lineTo(new Vector2d(28, -91))
                 .build();
         TrajectorySequence parkC = drive.trajectorySequenceBuilder(fstC.end())
                 .back(5)
@@ -207,14 +207,14 @@ public class newAutomusRedBack extends LinearOpMode {
                 .back(10)
                 .lineToLinearHeading(new Pose2d(10, -72, Math.toRadians(82)))
                 .lineTo(new Vector2d(12, -10))
-                .lineTo(new Vector2d(38, 13))
+                .lineTo(new Vector2d(35, 13))
                 .build();
         TrajectorySequence stackR2b = drive.trajectorySequenceBuilder(stackR2.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .forward(7)
+                .forward(8.5)
                 .build();
         Trajectory stackR2c = drive.trajectoryBuilder(stackR2b.end())
-                .back(5)
+                .back(7)
                 .build();
         TrajectorySequence boardR2a = drive.trajectorySequenceBuilder(stackR2c.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, 0.6*DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
@@ -223,13 +223,13 @@ public class newAutomusRedBack extends LinearOpMode {
                 .build();
         TrajectorySequence boardR2b = drive.trajectorySequenceBuilder(boardR2a.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.6 * DriveConstants.MAX_VEL, 0.6*DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .lineTo(new Vector2d(30, -90))
+                .lineTo(new Vector2d(40, -90))
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .forward(5)
                 .build();
         TrajectorySequence fstR = drive.trajectorySequenceBuilder(boardR2b.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .lineTo(new Vector2d(24, -90))
+                .lineTo(new Vector2d(34, -88))
                 .build();
         TrajectorySequence parkR = drive.trajectorySequenceBuilder(fstR.end())
                 .back(5)

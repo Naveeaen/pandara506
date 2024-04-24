@@ -189,12 +189,12 @@ public class Hardware extends MecanumDrive {
             wrist = null;
         }
         try{
-            launchPadPivot = hardwareMap.get(Servo.class, "cs0");
+            launchPadPivot = hardwareMap.get(Servo.class, "es5");
         } catch (Exception p_exception) {
             launchPadPivot = null;
         }
         try{
-            initiateLaunch = hardwareMap.get(Servo.class, "cs1");
+            initiateLaunch = hardwareMap.get(Servo.class, "es4");
         } catch (Exception p_exception) {
             initiateLaunch = null;
         }

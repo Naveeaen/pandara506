@@ -62,6 +62,8 @@ public class TeleOpp extends LinearOpMode {
         boolean launchLaunched = false;
         double launchPos = 0.3;
         double launchPosSpeed= 0;
+        boolean launchSet = false;
+        double Lpos = 0.15;
         String mode = "slides";
         boolean pressingback = false;
 
@@ -283,12 +285,20 @@ public class TeleOpp extends LinearOpMode {
             //launch pos = 0.38
             //"launcher"
             if(gamepad2.b && !pressingx2){
-                drive.launchPadPivot.setPosition(0.41);
+                drive.launchPadPivot.setPosition(0.17);
                 pressingx2 = true;
+                if(!launchSet)
+                    launchSet = true;
+                if(launchSet)
+                    launchSet = false;
             } else if(!gamepad2.b){
                 pressingx2= false;
             }
-            drive.launchPadPivot.setPosition(0.41);
+            if(gamepad2.right_stick_y != 0 && !launchSet){
+                drive.launchPadPivot.setPosition(Lpos);
+                Lpos += 0.01 * gamepad2.right_stick_y;
+            }
+            //drive.launchPadPivot.setPosition(0.15);
 
 
             //0.642
@@ -299,7 +309,7 @@ public class TeleOpp extends LinearOpMode {
                     drive.initiateLaunch.setPosition(0.5);
                     launchLaunched = true;
                 }else{
-                    drive.initiateLaunch.setPosition(1);
+                    drive.initiateLaunch.setPosition(0);
                     launchLaunched = false;
                 }
                 pressingy = true;

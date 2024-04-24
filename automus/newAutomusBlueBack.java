@@ -112,9 +112,9 @@ public class newAutomusBlueBack extends LinearOpMode {
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .lineTo(new Vector2d(39, 94))
                 .build();
-        TrajectorySequence parkL = drive.trajectorySequenceBuilder(fstL.end())
+        TrajectorySequence parkL = drive.trajectorySequenceBuilder(boardL1b.end())
                 .back(5)
-                .lineToLinearHeading(new Pose2d(50, 93, Math.toRadians(-90)))
+                //.lineToLinearHeading(new Pose2d(50, 93, Math.toRadians(-90)))
                 //.back(5)
                 .build();
 
@@ -136,7 +136,7 @@ public class newAutomusBlueBack extends LinearOpMode {
                 .lineTo(new Vector2d(4, 72))
                 .build();
         TrajectorySequence boardC1b = drive.trajectorySequenceBuilder(boardC1a.end())
-                .lineTo(new Vector2d(24, 91))
+                .lineTo(new Vector2d(25.4, 91))
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .forward(5)
                 .build();
@@ -168,9 +168,9 @@ public class newAutomusBlueBack extends LinearOpMode {
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .lineTo(new Vector2d(37.5, 91))
                 .build();
-        TrajectorySequence parkC = drive.trajectorySequenceBuilder(fstC.end())
+        TrajectorySequence parkC = drive.trajectorySequenceBuilder(boardC1b.end())
                 .back(5)
-                .lineToLinearHeading(new Pose2d(50, 93, Math.toRadians(-90)))
+                //.lineToLinearHeading(new Pose2d(50, 93, Math.toRadians(-90)))
                 //.back(5)
                 .build();
 
@@ -181,7 +181,7 @@ public class newAutomusBlueBack extends LinearOpMode {
         TrajectorySequence stackR1 = drive.trajectorySequenceBuilder(spikeR.end())
                 .lineToLinearHeading(new Pose2d(27.3, -11, Math.toRadians(-88.5)))
                 .setVelConstraint(Hardware.getVelocityConstraint(0.1 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .forward(10)
+                .forward(9)
                 .build();
         Trajectory stackR1b = drive.trajectoryBuilder(stackR1.end())
                 .back(10)
@@ -218,28 +218,28 @@ public class newAutomusBlueBack extends LinearOpMode {
                 .back(10)
                 .build();
         TrajectorySequence boardR2a = drive.trajectorySequenceBuilder(stackR2c.end())
-                .setVelConstraint(Hardware.getVelocityConstraint(0.8 * DriveConstants.MAX_VEL, 0.6*DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .lineToLinearHeading(new Pose2d(12, -5, Math.toRadians(94)))
-                .lineTo(new Vector2d(12, 72))
+                .setVelConstraint(Hardware.getVelocityConstraint(0.7 * DriveConstants.MAX_VEL, 0.6*DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
+                .lineToLinearHeading(new Pose2d(11, -5, Math.toRadians(94)))
+                .lineTo(new Vector2d(11, 72))
                 .build();
         TrajectorySequence boardR2b = drive.trajectorySequenceBuilder(boardR2a.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.6 * DriveConstants.MAX_VEL, 0.6*DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .lineTo(new Vector2d(28, 90))
+                .lineTo(new Vector2d(24, 90))
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
                 .forward(6)
                 .build();
         TrajectorySequence fstR = drive.trajectorySequenceBuilder(boardR2b.end())
                 .setVelConstraint(Hardware.getVelocityConstraint(0.15 * DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH))
-                .lineTo(new Vector2d(34, 95))
+                .lineTo(new Vector2d(30, 93))
                 .build();
-        TrajectorySequence parkR = drive.trajectorySequenceBuilder(fstR.end())
+        TrajectorySequence parkR = drive.trajectorySequenceBuilder(boardR1d.end())
                 .back(5)
-                .lineToLinearHeading(new Pose2d(50, 93, Math.toRadians(-90)))
+                //.lineToLinearHeading(new Pose2d(50, 93, Math.toRadians(-90)))
                 //.back(5)
                 .build();
         waitForStart();
-
-        sleep(timeout);
+ 
+        sleep(13000);
         switch(position){
             case("right"):
                 drive.followTrajectorySequence(spikeL); // spike L
@@ -258,7 +258,7 @@ public class newAutomusBlueBack extends LinearOpMode {
                 drive.slidesTo(0, 0.5);
                 drive.followTrajectorySequence(boardL1a); // board L 1
                 drive.wristU();
-                drive.slidesTo(1200);
+                drive.slidesTo(1500);
                 drive.followTrajectorySequence(boardL1b);
                 drive.openL();
                 drive.openR();
@@ -266,7 +266,7 @@ public class newAutomusBlueBack extends LinearOpMode {
                 sleep(100);
                 drive.wristD();
 
-                drive.followTrajectorySequence(stackL2); // stack L 2
+                /*drive.followTrajectorySequence(stackL2); // stack L 2
                 drive.slidesTo(180);
                 drive.followTrajectorySequence(stackL2b);
                 drive.closeR();
@@ -285,7 +285,7 @@ public class newAutomusBlueBack extends LinearOpMode {
                 drive.followTrajectorySequence(fstL);
                 drive.slidesTo(0);
                 sleep(100);
-                drive.wristD();
+                drive.wristD();*/
 
                 drive.followTrajectorySequence(parkL); // park L
                 break;
@@ -307,7 +307,7 @@ public class newAutomusBlueBack extends LinearOpMode {
                 drive.slidesTo(0, 0.3);
                 drive.followTrajectorySequence(boardC1a); // board C 1
                 drive.wristU();
-                drive.slidesTo(1200);
+                drive.slidesTo(1500);
                 drive.followTrajectorySequence(boardC1b);
                 drive.openL();
                 drive.openR();
@@ -315,7 +315,7 @@ public class newAutomusBlueBack extends LinearOpMode {
                 sleep(100);
                 drive.wristD();
 
-                drive.followTrajectorySequence(stackC2); // stack C 2
+                /*drive.followTrajectorySequence(stackC2); // stack C 2
                 drive.slidesTo(180);
                 drive.followTrajectorySequence(stackC2b);
                 sleep(200);
@@ -335,7 +335,7 @@ public class newAutomusBlueBack extends LinearOpMode {
                 drive.followTrajectorySequence(fstC);
                 drive.slidesTo(0);
                 sleep(100);
-                drive.wristD();
+                drive.wristD();*/
 
                 drive.followTrajectorySequence(parkC); // park C
                 break;
@@ -357,20 +357,20 @@ public class newAutomusBlueBack extends LinearOpMode {
                 drive.slidesTo(0, 0.3);
                 drive.followTrajectorySequence(boardR1a); // board R 1
                 drive.wristU();
-                drive.slidesTo(1200);
+                drive.slidesTo(1500);
                 drive.followTrajectorySequence(boardR1b);
                 drive.openR();
                 drive.slidesTo(500, 0.5);
                 drive.followTrajectorySequence(boardR1c);
-                drive.slidesTo(1600);
+                drive.slidesTo(1700);
                 drive.followTrajectorySequence(boardR1d);
                 drive.openL();
                 drive.slidesTo(0, 0.5);
                 sleep(100);
                 drive.wristD();
 
-                drive.followTrajectorySequence(stackR2); // stack R 2
-                drive.slidesTo(180);
+               /* drive.followTrajectorySequence(stackR2); // stack R 2
+                drive.slidesTo(190);
                 drive.followTrajectorySequence(stackR2b);
                 drive.closeR();
                 drive.closeL();
@@ -388,7 +388,7 @@ public class newAutomusBlueBack extends LinearOpMode {
                 drive.followTrajectorySequence(fstR);
                 drive.slidesTo(0);
                 sleep(100);
-                drive.wristD();
+                drive.wristD();*/
 
                 drive.followTrajectorySequence(parkR); // park R
                 break;
